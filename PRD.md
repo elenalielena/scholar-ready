@@ -32,7 +32,7 @@ ScholarReady never predicts or implies a chance of winning. Readiness means docu
 - Age 18, BBA Year 1, local student, first-semester GPA 3.10, volunteers and leads a student society committee.
 - Goals: find out which scholarships she can actually apply for without reading dozens of long PDF notices; avoid missing a deadline.
 - Pain points: eligibility wording is confusing; requirements are scattered across different pages; she does not know which documents (transcript, reference letter, personal statement) are reused across applications.
-- Success for Chloe: within 10 minutes she has a shortlist, understands why she qualifies, and has a single checklist showing "3 of 7 ready".
+- Success for Chloe: within 10 minutes she has a shortlist, understands why she qualifies, and has a single checklist showing "2 of 4 ready".
 
 **Persona B: Mr David Lau (fictional), Scholarship Adviser, Faculty Student Office (future paying customer)**
 
@@ -725,7 +725,3 @@ Check this distribution manually on `/matches` after any seed edit. An automated
 | Locale | UK English spelling; dates `en-GB` (14 Nov 2026); currency `HK$` with thousands separators |
 | Reliability | App usable when `localStorage` is unavailable (in-memory fallback) |
 | Code quality | TypeScript strict, ESLint clean; automated tests and Lighthouse targets deferred to Phase 2 (P2-7) |
-
-
----
-
