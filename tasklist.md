@@ -241,7 +241,7 @@
   Add a `.gitignore` excluding `node_modules` and `dist`. Connect the Manus project to GitHub using the Manus GitHub icon and create a private repository named `scholar-ready` (assignment brief, Appendix 6). Then invite edwinluk@cuhk.edu.hk as a collaborator (Appendix 7).
   **Verification Gate:** open the repository on GitHub and confirm the Private label, at least one commit, `PRD.md`, `tasklist.md`, `src/`, `package.json` and `vercel.json` are present, and `node_modules`, `dist` and any `.env` file are absent. Confirm the invitation to edwinluk@cuhk.edu.hk appears under Settings, Collaborators.
 
-- [ ] **51. Deploy to Vercel** (Vercel project)
+- [x] **51. Deploy to Vercel** (Vercel project)
   Import the GitHub repository, choose the Vite preset, build command `npm run build`, output `dist`, no environment variables.
   **Verification Gate:** open the live URL and confirm the landing page loads. Paste `/matches` and `/scholarships/sch-001` directly into the address bar, refresh each, and confirm both load with no 404. Confirm 4 Eligible, 4 Partial match, 4 Not eligible on the live site.
 
