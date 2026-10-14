@@ -237,7 +237,7 @@
   Run the production build and preview, then walk the full journey from PRD Section 3.3.
   **Verification Gate:** (PRD 9.9) run `npm install && npm run build` with zero errors and no environment variables. In `npm run preview`, keep the DevTools Network tab open during the full journey and confirm no requests go to external domains. Use "Reset demo data" and confirm the seed returns (4 / 4 / 4 on Matches, "2 of 4 ready" on Checklist).
 
-- [ ] **50. Push to GitHub** (repository)
+- [x] **50. Push to GitHub** (repository)
   Add a `.gitignore` excluding `node_modules` and `dist`. Connect the Manus project to GitHub using the Manus GitHub icon and create a private repository named `scholar-ready` (assignment brief, Appendix 6). Then invite edwinluk@cuhk.edu.hk as a collaborator (Appendix 7).
   **Verification Gate:** open the repository on GitHub and confirm the Private label, at least one commit, `PRD.md`, `tasklist.md`, `src/`, `package.json` and `vercel.json` are present, and `node_modules`, `dist` and any `.env` file are absent. Confirm the invitation to edwinluk@cuhk.edu.hk appears under Settings, Collaborators.
 
