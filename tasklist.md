@@ -244,6 +244,7 @@
 - [x] **51. Deploy to Vercel** (Vercel project)
   Import the GitHub repository, choose the Vite preset, build command `npm run build`, output `dist`, no environment variables.
   **Verification Gate:** open the live URL and confirm the landing page loads. Paste `/matches` and `/scholarships/sch-001` directly into the address bar, refresh each, and confirm both load with no 404. Confirm 4 Eligible, 4 Partial match, 4 Not eligible on the live site.
+  **Note:** The Manus Vercel connector failed with a scope authorisation error, so the GitHub repository was imported into Vercel manually (assignment brief, Appendix 8). The live URL (https://scholar-ready.vercel.app) was then verified against this gate.
 
 ---
 
