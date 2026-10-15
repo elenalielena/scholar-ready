@@ -272,7 +272,7 @@
   Replace per-rule rows with one row per criterion type, labelled in plain words, per PRD Section 3.4 (Compare). Cells show the requirement and result, or "No requirement". Only show criterion types used by at least one compared scholarship.
   **Verification Gate:** (PRD 9.5) compare Peak Academic Excellence, Shek O Sports and Lion Rock Community Service. Confirm rows read GPA, Year of study and Activities with no "Not applicable" and no rule ids, and the table still has a `<caption>` and header cells.
 
-- [ ] **57. Redeploy and verify live**
+- [x] **57. Redeploy and verify live**
   Commit and push to the `scholar-ready` GitHub repository so Vercel redeploys automatically.
   **Verification Gate:** on https://scholar-ready.vercel.app, confirm the match preview (Task 52), the tags in View Page Source (Task 53), the footer privacy link opening `/privacy` (Task 54), plain-language reasons (Task 55) and the grouped compare rows (Task 56). Confirm `/matches` still shows 4 Eligible, 4 Partial match, 4 Not eligible after "Reset demo data".
 
