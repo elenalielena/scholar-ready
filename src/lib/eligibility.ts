@@ -7,35 +7,76 @@ import type {
   StudentProfile,
 } from '../types/models'
 
-function displayValue(value: unknown): string {
-  if (value === null || value === undefined) {
-    return 'not provided'
-  }
-  if (Array.isArray(value)) {
-    return value.length > 0 ? value.join(', ') : 'none listed'
-  }
-  if (typeof value === 'boolean') {
-    return value ? 'yes' : 'no'
-  }
-  return String(value)
+const activityLabels: Record<string, string> = {
+  community_service: 'community service',
+  leadership: 'leadership',
+  sports: 'sports',
+  arts: 'arts',
+  research: 'research',
+  entrepreneurship: 'entrepreneurship',
+  exchange: 'exchange',
 }
 
-function displayRequirement(rule: EligibilityRule): string {
-  const value = displayValue(rule.value)
-  switch (rule.operator) {
-    case 'in':
-      return `one of ${value}`
-    case 'gte':
-      return `${value} or above`
-    case 'lte':
-      return `${value} or below`
-    case 'equals':
-      return `equal to ${value}`
-    case 'includesAny':
-      return `including any of ${value}`
-    case 'includesAll':
-      return `including all of ${value}`
+function listInPlainLanguage(values: string[]): string {
+  const labels = values.map((value) => activityLabels[value] ?? value)
+  if (labels.length <= 1) return labels[0] ?? ''
+  if (labels.length === 2) return `${labels[0]} and ${labels[1]}`
+  return `${labels.slice(0, -1).join(', ')} and ${labels.at(-1)}`
+}
+
+function studentSentence(profile: StudentProfile, rule: EligibilityRule): { text: string; missing: boolean } {
+  const value = profile[rule.field]
+  switch (rule.field) {
+    case 'gpa':
+      return value === null
+        ? { text: 'You have not provided your GPA yet.', missing: true }
+        : { text: `Your GPA is ${Number(value).toFixed(2)}.`, missing: false }
+    case 'yearOfStudy':
+      return { text: `You are in Year ${value}.`, missing: false }
+    case 'faculty':
+      return { text: `Your faculty is ${value}.`, missing: false }
+    case 'residency':
+      return {
+        text: value === 'local' ? 'You are a local student.' : 'You are a non-local student.',
+        missing: false,
+      }
+    case 'financialNeedDeclared':
+      return {
+        text: value ? 'You have declared financial need.' : 'You have not declared financial need.',
+        missing: false,
+      }
+    case 'activities': {
+      const activities = Array.isArray(value) ? value : []
+      return activities.length === 0
+        ? { text: 'You have not listed any activities.', missing: true }
+        : { text: `Your activities include ${listInPlainLanguage(activities)}.`, missing: false }
+    }
+    case 'languages': {
+      const languages = Array.isArray(value) ? value : []
+      return languages.length === 0
+        ? { text: 'You have not listed any languages.', missing: true }
+        : { text: `You listed ${listInPlainLanguage(languages)}.`, missing: false }
+    }
+    case 'firstGenerationStudent':
+      if (value === null) {
+        return {
+          text: 'You chose not to say whether you are a first-generation university student.',
+          missing: true,
+        }
+      }
+      return {
+        text: value
+          ? 'You are a first-generation university student.'
+          : 'You are not a first-generation university student.',
+        missing: false,
+      }
   }
+}
+
+function resultExplanation(profile: StudentProfile, rule: EligibilityRule): string {
+  const student = studentSentence(profile, rule)
+  const profileNote = student.missing ? ' Add this on your profile to check this criterion.' : ''
+  return `${student.text}${profileNote} ${rule.label}`
 }
 
 function compareRuleValue(profileValue: unknown, rule: EligibilityRule): boolean {
@@ -62,32 +103,14 @@ function compareRuleValue(profileValue: unknown, rule: EligibilityRule): boolean
   }
 }
 
-function resultExplanation(
-  profileValue: unknown,
-  rule: EligibilityRule,
-  outcome: RuleOutcome,
-): string {
-  const value = displayValue(profileValue)
-  const requirement = displayRequirement(rule)
-  if (outcome === 'check') {
-    return `Your value is ${value}. This criterion requires ${requirement}; please check the supporting evidence.`
-  }
-  return `Your value is ${value}. This criterion requires ${requirement}.`
-}
-
 export function evaluateRule(profile: StudentProfile, rule: EligibilityRule): RuleResult {
   const profileValue = profile[rule.field]
-  if (profileValue === null || profileValue === undefined) {
-    return {
-      ruleId: rule.id,
-      outcome: 'check',
-      explanation: resultExplanation(profileValue, rule, 'check'),
-    }
-  }
-
-  const comparisonPassed = compareRuleValue(profileValue, rule)
-  const outcome: RuleOutcome = !comparisonPassed
-    ? 'not_met'
+  const missing = profileValue === null || profileValue === undefined
+  const comparisonPassed = !missing && compareRuleValue(profileValue, rule)
+  const outcome: RuleOutcome = missing || !comparisonPassed
+    ? missing
+      ? 'check'
+      : 'not_met'
     : rule.requiresManualCheck
       ? 'check'
       : 'met'
@@ -95,7 +118,7 @@ export function evaluateRule(profile: StudentProfile, rule: EligibilityRule): Ru
   return {
     ruleId: rule.id,
     outcome,
-    explanation: resultExplanation(profileValue, rule, outcome),
+    explanation: resultExplanation(profile, rule),
   }
 }
 

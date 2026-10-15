@@ -4,6 +4,24 @@ import { evaluateMatch } from '../lib/eligibility'
 import { useAppState } from '../state/AppStateProvider'
 import MatchGroupBadge from '../components/common/MatchGroupBadge'
 import DeadlineChip from '../components/common/DeadlineChip'
+import type { RuleField, RuleOutcome } from '../types/models'
+
+const criterionLabels: Record<RuleField, string> = {
+  gpa: 'GPA',
+  yearOfStudy: 'Year of study',
+  faculty: 'Faculty',
+  residency: 'Residency',
+  financialNeedDeclared: 'Financial need',
+  activities: 'Activities',
+  languages: 'Languages',
+  firstGenerationStudent: 'First-generation student',
+}
+
+const outcomeDetails: Record<RuleOutcome, { label: string; className: string }> = {
+  met: { label: 'Meets', className: 'text-success-text' },
+  not_met: { label: 'Does not meet', className: 'text-danger-text' },
+  check: { label: 'Check', className: 'text-warning-text' },
+}
 
 export default function ComparePage() {
   const { state, dispatch } = useAppState()
@@ -19,7 +37,9 @@ export default function ComparePage() {
     const deadlines = state.deadlines.filter((item) => item.scholarshipId === scholarship.id).sort((a, b) => a.date.localeCompare(b.date))
     return { scholarship, match, documents, deadlines }
   })
-  const criteria = [...new Set(comparisons.flatMap(({ match }) => match.results.map((result) => result.ruleId)))]
+  const criterionFields = [...new Set(comparisons.flatMap(({ scholarship }) => scholarship.eligibilityRuleIds
+    .map((ruleId) => seedRules.find((rule) => rule.id === ruleId)?.field)
+    .filter((field): field is RuleField => Boolean(field))))]
 
   return (
     <div className="space-y-8">
@@ -34,7 +54,16 @@ export default function ComparePage() {
             <tr><th scope="row" className="p-4 font-bold text-ink">Award type</th>{comparisons.map(({ scholarship }) => <td key={scholarship.id} className="p-4">{scholarship.awardType.replace('_', ' ')}</td>)}</tr>
             <tr><th scope="row" className="p-4 font-bold text-ink">Match group</th>{comparisons.map(({ scholarship, match }) => <td key={scholarship.id} className="p-4"><MatchGroupBadge group={match.group} /></td>)}</tr>
             <tr><th scope="row" className="p-4 font-bold text-ink">Criteria met</th>{comparisons.map(({ scholarship, match }) => <td key={scholarship.id} className="p-4">{match.metCount} of {match.totalCount}</td>)}</tr>
-            {criteria.map((criterion) => <tr key={criterion}><th scope="row" className="p-4 font-bold text-ink">Criterion {criterion}</th>{comparisons.map(({ scholarship, match }) => <td key={scholarship.id} className="p-4">{match.results.find((result) => result.ruleId === criterion)?.explanation ?? 'Not applicable'}</td>)}</tr>)}
+            {criterionFields.map((field) => <tr key={field}><th scope="row" className="p-4 font-bold text-ink">{criterionLabels[field]}</th>{comparisons.map(({ scholarship, match }) => {
+              const rules = seedRules.filter((rule) => rule.scholarshipId === scholarship.id && rule.field === field)
+              if (rules.length === 0) return <td key={scholarship.id} className="p-4">No requirement</td>
+              return <td key={scholarship.id} className="space-y-3 p-4">{rules.map((rule) => {
+                const result = match.results.find((item) => item.ruleId === rule.id)
+                if (!result) return null
+                const outcome = outcomeDetails[result.outcome]
+                return <div key={rule.id}><span className={`font-bold ${outcome.className}`}>{outcome.label}</span><p className="mt-1">{result.explanation}</p></div>
+              })}</td>
+            })}</tr>)}
             <tr><th scope="row" className="p-4 font-bold text-ink">Documents</th>{comparisons.map(({ scholarship, documents }) => <td key={scholarship.id} className="p-4">{documents}</td>)}</tr>
             <tr><th scope="row" className="p-4 font-bold text-ink">Deadlines</th>{comparisons.map(({ scholarship, deadlines }) => <td key={scholarship.id} className="space-y-2 p-4">{deadlines.map((deadline) => <div key={deadline.id}><span className="font-semibold">{deadline.label}</span><br /><DeadlineChip date={deadline.date} /></div>)}</td>)}</tr>
             <tr><th scope="row" className="p-4 font-bold text-ink">Renewable</th>{comparisons.map(({ scholarship }) => <td key={scholarship.id} className="p-4">{scholarship.renewable ? 'Yes' : 'No'}</td>)}</tr>

@@ -8,6 +8,7 @@ import MatchesPage from './pages/MatchesPage'
 import NotFoundPage from './pages/NotFoundPage'
 import PricingPage from './pages/PricingPage'
 import ProfilePage from './pages/ProfilePage'
+import PrivacyPage from './pages/PrivacyPage'
 import ScholarshipDetailPage from './pages/ScholarshipDetailPage'
 
 export const router = createBrowserRouter([
@@ -22,6 +23,7 @@ export const router = createBrowserRouter([
       { path: '/checklist', element: <ChecklistPage /> },
       { path: '/dashboard', element: <DashboardPage /> },
       { path: '/pricing', element: <PricingPage /> },
+      { path: '/privacy', element: <PrivacyPage /> },
       { path: '*', element: <NotFoundPage /> },
     ],
   },

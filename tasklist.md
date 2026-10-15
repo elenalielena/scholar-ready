@@ -1,10 +1,12 @@
+ =====
+
 # tasklist.md: ScholarReady Phase 1 Execution Plan
 
 | Item | Detail |
 |---|---|
 | Source | PRD.md v1.2 (Phase 1 Core MVP, trimmed after review) |
 | Executor | Manus AI |
-| Total tasks | 51 across 6 modules |
+| Total tasks | 57 across 7 modules (Module 7 added after launch) |
 | Stack | Vite, React 18+, TypeScript (strict), Tailwind CSS, React Router v6+, `localStorage` |
 
 ## Rules for the Agent
@@ -245,6 +247,34 @@
   Import the GitHub repository, choose the Vite preset, build command `npm run build`, output `dist`, no environment variables.
   **Verification Gate:** open the live URL and confirm the landing page loads. Paste `/matches` and `/scholarships/sch-001` directly into the address bar, refresh each, and confirm both load with no 404. Confirm 4 Eligible, 4 Partial match, 4 Not eligible on the live site.
   **Note:** The Manus Vercel connector failed with a scope authorisation error, so the GitHub repository was imported into Vercel manually (assignment brief, Appendix 8). The live URL (https://scholar-ready.vercel.app) was then verified against this gate.
+
+---
+
+## Module 7: Post-Launch Improvements
+
+- [x] **52. Landing match preview** (`src/components/landing/MatchPreview.tsx`, `src/pages/LandingPage.tsx`)
+  Below the three how-it-works steps, add a read-only card labelled "Example match (demo data)". It shows the soonest-deadline Eligible scholarship for the current profile, calculated with the existing eligibility engine (no new matching logic), including name, provider, amount, MatchGroupBadge, "X of Y criteria met" and a "See all matches" link to `/matches`. No Save or Compare buttons. Follow the wording rules (Rule 5).
+  **Verification Gate:** (PRD 9.1) after "Reset demo data", the landing page shows Kowloon Business Leaders Bursary, HK$25,000, Eligible, "3 of 3 criteria met". "See all matches" opens `/matches`, and the link is reachable by Tab with a visible focus ring. Run `npm run build` with zero errors.
+
+- [x] **53. Social sharing tags** (`index.html`)
+  Add a meta description and the tags `og:title`, `og:description`, `og:type` (website), `og:url` (https://scholar-ready.vercel.app) and `twitter:card` (summary). Title: "ScholarReady: find scholarships you qualify for". Description: "See which scholarships you are eligible for, why, and which documents and deadlines to prepare. Demo with fictional data."
+  **Verification Gate:** run `npm run build` with zero errors. In `npm run preview`, View Page Source and confirm all five tags and the meta description are present.
+
+- [x] **54. Privacy page** (`src/pages/PrivacyPage.tsx`, `src/routes.tsx`, `src/components/layout/Footer.tsx`)
+  Add a `/privacy` route showing an H1 "Privacy statement" and the existing `PdpoStatement` component, plus a link back to `/profile`. Change the footer privacy link from `/profile#pdpo` to `/privacy`. Keep the statement on the profile page above Save.
+  **Verification Gate:** click the footer privacy link on any page and confirm `/privacy` opens with the statement at the top. Open `/privacy` directly and refresh; no 404. Confirm the profile page still shows the statement above Save.
+
+- [x] **55. Plain-language eligibility reasons** (`src/lib/eligibility.ts`, `src/data/seed/rules.ts`)
+  Set every rule `label` in `rules.ts` to the exact requirement sentence in PRD Section 5.5 Table B (all 29), and build each reason as the Table A student sentence followed by that label. Follow PRD Section 5.3 point 5, for all criterion types and all screens where reasons appear. Remove "Your value is", rule ids and code values such as "community_service" from all user-facing text.
+  **Verification Gate:** after "Reset demo data", confirm Lion Rock Community Service on `/scholarships/sch-002` reads "Your activities include community service and leadership. This scholarship requires community service." and "You are in Year 1. This scholarship is open to Years 1 to 4." Set GPA to 1.50 and confirm Peak Academic Excellence reads "Your GPA is 1.50. This scholarship requires 3.60 or above." Search the source of `src/` user-facing strings and the rendered `/matches`, `/scholarships/sch-001` to `sch-012` and `/compare` pages for "Your value is", "r-0" and "_" in reasons; confirm zero results. Reset demo data afterwards.
+
+- [x] **56. Compare table criterion rows** (`src/pages/ComparePage.tsx`)
+  Replace per-rule rows with one row per criterion type, labelled in plain words, per PRD Section 3.4 (Compare). Cells show the requirement and result, or "No requirement". Only show criterion types used by at least one compared scholarship.
+  **Verification Gate:** (PRD 9.5) compare Peak Academic Excellence, Shek O Sports and Lion Rock Community Service. Confirm rows read GPA, Year of study and Activities with no "Not applicable" and no rule ids, and the table still has a `<caption>` and header cells.
+
+- [ ] **57. Redeploy and verify live**
+  Commit and push to the `scholar-ready` GitHub repository so Vercel redeploys automatically.
+  **Verification Gate:** on https://scholar-ready.vercel.app, confirm the match preview (Task 52), the tags in View Page Source (Task 53), the footer privacy link opening `/privacy` (Task 54), plain-language reasons (Task 55) and the grouped compare rows (Task 56). Confirm `/matches` still shows 4 Eligible, 4 Partial match, 4 Not eligible after "Reset demo data".
 
 ---
 

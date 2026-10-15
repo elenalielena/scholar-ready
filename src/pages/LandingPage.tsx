@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { useAppState } from '../state/AppStateProvider'
+import MatchPreview from '../components/landing/MatchPreview'
 
 const steps = [
   {
@@ -82,6 +83,8 @@ export default function LandingPage() {
           ))}
         </ol>
       </section>
+
+      <MatchPreview />
 
       <section aria-labelledby="trust-heading" className="rounded-2xl bg-ink p-8 text-white">
         <p className="text-sm font-bold uppercase tracking-[0.2em] text-blue-200">Trust first</p>

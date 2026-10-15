@@ -7,7 +7,7 @@ export const seedRules: EligibilityRule[] = [
     field: 'yearOfStudy',
     operator: 'in',
     value: [1],
-    label: 'Year of study is 1',
+    label: 'This scholarship is open to Year 1 students only.',
     requiresManualCheck: false,
   },
   {
@@ -16,7 +16,7 @@ export const seedRules: EligibilityRule[] = [
     field: 'gpa',
     operator: 'gte',
     value: 3,
-    label: 'GPA is 3.00 or above',
+    label: 'This scholarship requires a GPA of 3.00 or above.',
     requiresManualCheck: false,
   },
   {
@@ -25,7 +25,7 @@ export const seedRules: EligibilityRule[] = [
     field: 'residency',
     operator: 'equals',
     value: 'local',
-    label: 'Residency is local',
+    label: 'This scholarship is open to local students.',
     requiresManualCheck: false,
   },
   {
@@ -34,7 +34,7 @@ export const seedRules: EligibilityRule[] = [
     field: 'activities',
     operator: 'includesAny',
     value: ['community_service'],
-    label: 'Community service activity is listed',
+    label: 'This scholarship requires community service.',
     requiresManualCheck: false,
   },
   {
@@ -43,7 +43,7 @@ export const seedRules: EligibilityRule[] = [
     field: 'yearOfStudy',
     operator: 'in',
     value: [1, 2, 3, 4],
-    label: 'Year of study is 1, 2, 3 or 4',
+    label: 'This scholarship is open to Years 1 to 4.',
     requiresManualCheck: false,
   },
   {
@@ -52,7 +52,7 @@ export const seedRules: EligibilityRule[] = [
     field: 'faculty',
     operator: 'in',
     value: ['Business'],
-    label: 'Faculty is Business',
+    label: 'This scholarship is open to Business students.',
     requiresManualCheck: false,
   },
   {
@@ -61,7 +61,7 @@ export const seedRules: EligibilityRule[] = [
     field: 'activities',
     operator: 'includesAny',
     value: ['leadership'],
-    label: 'Leadership activity is listed',
+    label: 'This scholarship requires leadership experience.',
     requiresManualCheck: false,
   },
   {
@@ -70,7 +70,7 @@ export const seedRules: EligibilityRule[] = [
     field: 'gpa',
     operator: 'gte',
     value: 2.8,
-    label: 'GPA is 2.80 or above',
+    label: 'This scholarship requires a GPA of 2.80 or above.',
     requiresManualCheck: false,
   },
   {
@@ -79,7 +79,7 @@ export const seedRules: EligibilityRule[] = [
     field: 'financialNeedDeclared',
     operator: 'equals',
     value: true,
-    label: 'Financial need is self-declared',
+    label: 'This scholarship requires a declaration of financial need.',
     requiresManualCheck: false,
   },
   {
@@ -88,7 +88,7 @@ export const seedRules: EligibilityRule[] = [
     field: 'residency',
     operator: 'equals',
     value: 'local',
-    label: 'Residency is local',
+    label: 'This scholarship is open to local students.',
     requiresManualCheck: false,
   },
   {
@@ -97,7 +97,7 @@ export const seedRules: EligibilityRule[] = [
     field: 'activities',
     operator: 'includesAny',
     value: ['leadership'],
-    label: 'Leadership activity is listed',
+    label: 'This scholarship requires leadership experience.',
     requiresManualCheck: false,
   },
   {
@@ -106,7 +106,7 @@ export const seedRules: EligibilityRule[] = [
     field: 'yearOfStudy',
     operator: 'in',
     value: [1, 2],
-    label: 'Year of study is 1 or 2',
+    label: 'This scholarship is open to Years 1 and 2.',
     requiresManualCheck: false,
   },
   {
@@ -115,7 +115,7 @@ export const seedRules: EligibilityRule[] = [
     field: 'activities',
     operator: 'includesAny',
     value: ['leadership'],
-    label: 'Leadership role held for at least one year',
+    label: 'This scholarship requires a leadership role held for at least one year. The provider will ask for evidence of this.',
     requiresManualCheck: true,
   },
   {
@@ -124,7 +124,7 @@ export const seedRules: EligibilityRule[] = [
     field: 'languages',
     operator: 'includesAll',
     value: ['English', 'Cantonese', 'Putonghua'],
-    label: 'English, Cantonese and Putonghua are listed',
+    label: 'This scholarship requires English, Cantonese and Putonghua. The provider will ask for evidence of this.',
     requiresManualCheck: true,
   },
   {
@@ -133,7 +133,7 @@ export const seedRules: EligibilityRule[] = [
     field: 'gpa',
     operator: 'gte',
     value: 3,
-    label: 'GPA is 3.00 or above',
+    label: 'This scholarship requires a GPA of 3.00 or above.',
     requiresManualCheck: false,
   },
   {
@@ -142,7 +142,7 @@ export const seedRules: EligibilityRule[] = [
     field: 'firstGenerationStudent',
     operator: 'equals',
     value: true,
-    label: 'Student is first generation',
+    label: 'This scholarship is for first-generation university students.',
     requiresManualCheck: false,
   },
   {
@@ -151,7 +151,7 @@ export const seedRules: EligibilityRule[] = [
     field: 'financialNeedDeclared',
     operator: 'equals',
     value: true,
-    label: 'Financial need is self-declared',
+    label: 'This scholarship requires a declaration of financial need.',
     requiresManualCheck: false,
   },
   {
@@ -160,7 +160,7 @@ export const seedRules: EligibilityRule[] = [
     field: 'residency',
     operator: 'equals',
     value: 'local',
-    label: 'Residency is local',
+    label: 'This scholarship is open to local students.',
     requiresManualCheck: false,
   },
   {
@@ -169,7 +169,7 @@ export const seedRules: EligibilityRule[] = [
     field: 'activities',
     operator: 'includesAny',
     value: ['community_service'],
-    label: 'Community service activity is listed',
+    label: 'This scholarship requires community service.',
     requiresManualCheck: false,
   },
   {
@@ -178,7 +178,7 @@ export const seedRules: EligibilityRule[] = [
     field: 'activities',
     operator: 'includesAny',
     value: ['community_service'],
-    label: 'At least 50 verified volunteer hours',
+    label: 'This scholarship requires at least 50 verified volunteer hours. The provider will ask for evidence of this.',
     requiresManualCheck: true,
   },
   {
@@ -187,7 +187,7 @@ export const seedRules: EligibilityRule[] = [
     field: 'gpa',
     operator: 'gte',
     value: 3.6,
-    label: 'GPA is 3.60 or above',
+    label: 'This scholarship requires a GPA of 3.60 or above.',
     requiresManualCheck: false,
   },
   {
@@ -196,7 +196,7 @@ export const seedRules: EligibilityRule[] = [
     field: 'yearOfStudy',
     operator: 'in',
     value: [1, 2, 3, 4],
-    label: 'Year of study is 1, 2, 3 or 4',
+    label: 'This scholarship is open to Years 1 to 4.',
     requiresManualCheck: false,
   },
   {
@@ -205,7 +205,7 @@ export const seedRules: EligibilityRule[] = [
     field: 'activities',
     operator: 'includesAny',
     value: ['sports'],
-    label: 'Sports activity is listed',
+    label: 'This scholarship requires sports involvement.',
     requiresManualCheck: false,
   },
   {
@@ -214,7 +214,7 @@ export const seedRules: EligibilityRule[] = [
     field: 'yearOfStudy',
     operator: 'in',
     value: [1, 2, 3, 4],
-    label: 'Year of study is 1, 2, 3 or 4',
+    label: 'This scholarship is open to Years 1 to 4.',
     requiresManualCheck: false,
   },
   {
@@ -223,7 +223,7 @@ export const seedRules: EligibilityRule[] = [
     field: 'activities',
     operator: 'includesAny',
     value: ['arts'],
-    label: 'Arts activity is listed',
+    label: 'This scholarship requires arts involvement.',
     requiresManualCheck: false,
   },
   {
@@ -232,7 +232,7 @@ export const seedRules: EligibilityRule[] = [
     field: 'faculty',
     operator: 'in',
     value: ['Arts', 'Education'],
-    label: 'Faculty is Arts or Education',
+    label: 'This scholarship is open to Arts and Education students.',
     requiresManualCheck: false,
   },
   {
@@ -241,7 +241,7 @@ export const seedRules: EligibilityRule[] = [
     field: 'yearOfStudy',
     operator: 'in',
     value: [3, 4],
-    label: 'Year of study is 3 or 4',
+    label: 'This scholarship is open to Years 3 and 4.',
     requiresManualCheck: false,
   },
   {
@@ -250,7 +250,7 @@ export const seedRules: EligibilityRule[] = [
     field: 'faculty',
     operator: 'in',
     value: ['Science', 'Engineering'],
-    label: 'Faculty is Science or Engineering',
+    label: 'This scholarship is open to Science and Engineering students.',
     requiresManualCheck: false,
   },
   {
@@ -259,7 +259,7 @@ export const seedRules: EligibilityRule[] = [
     field: 'activities',
     operator: 'includesAny',
     value: ['research'],
-    label: 'Research activity is listed',
+    label: 'This scholarship requires research experience.',
     requiresManualCheck: false,
   },
 ]
