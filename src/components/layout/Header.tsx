@@ -52,6 +52,11 @@ export default function Header() {
                 Profile
               </NavLink>
             </li>
+            <li>
+              <NavLink to="/sign-in" className={navigationClassName} onClick={closeMenu}>
+                Sign in
+              </NavLink>
+            </li>
           </ul>
         </nav>
 
@@ -96,6 +101,11 @@ export default function Header() {
             <li>
               <NavLink to="/profile" className={navigationClassName} onClick={closeMenu}>
                 Profile
+              </NavLink>
+            </li>
+            <li>
+              <NavLink to="/sign-in" className={navigationClassName} onClick={closeMenu}>
+                Sign in
               </NavLink>
             </li>
           </ul>

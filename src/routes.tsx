@@ -10,6 +10,7 @@ import PricingPage from './pages/PricingPage'
 import ProfilePage from './pages/ProfilePage'
 import PrivacyPage from './pages/PrivacyPage'
 import ScholarshipDetailPage from './pages/ScholarshipDetailPage'
+import SignInPage from './pages/SignInPage'
 
 export const router = createBrowserRouter([
   {
@@ -24,6 +25,7 @@ export const router = createBrowserRouter([
       { path: '/dashboard', element: <DashboardPage /> },
       { path: '/pricing', element: <PricingPage /> },
       { path: '/privacy', element: <PrivacyPage /> },
+      { path: '/sign-in', element: <SignInPage /> },
       { path: '*', element: <NotFoundPage /> },
     ],
   },

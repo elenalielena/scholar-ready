@@ -2,609 +2,315 @@
 
 | Item | Detail |
 |---|---|
-| Product | ScholarReady |
-| Document type | Product Requirements Document (IDE-ready) |
-| Version | 1.3 (Phase 1 Core MVP plus post-launch landing improvements) |
-| Status | Approved for build |
-| Platform | Desktop-first web app, responsive down to 1024px, usable at 768px |
-| Data | Seeded fictional data only, stored in the browser |
+| Version | 1.5 (adds a demo sign-in page; otherwise as v1.4) |
+| Status | Phase 1 built and deployed |
+| Platform | Desktop-first web app; fully responsive down to 1024px, usable at 768px |
+| Data | Fictional seed data only, stored in the user's browser |
 
 ---
 
-## 1. Executive Summary
+## 1. Overview
 
-### 1.1 Value Proposition
+### 1.1 Problem
 
-ScholarReady helps undergraduate students find scholarships they are eligible for, see clearly why they qualify, and track the documents and deadlines needed to apply.
+Undergraduates lose time on scholarships they are not eligible for, struggle with confusing eligibility wording, and start applications without knowing which documents they need or reuse. The result is wasted effort and missed deadlines.
 
-Three promises guide every feature:
+### 1.2 Value Proposition
 
-1. **Find:** match a student profile against scholarship criteria using visible, rule-based checks.
-2. **Understand:** show every reason a student meets, partly meets or does not meet each criterion, in plain language.
-3. **Prepare:** combine document requirements and deadlines across saved scholarships into one checklist and one dashboard.
+ScholarReady checks a student profile against each scholarship's published criteria, explains every result in plain language, and combines the required documents and deadlines of saved scholarships into one checklist and one dashboard.
 
-ScholarReady never predicts or implies a chance of winning. Readiness means document completeness only.
+ScholarReady never predicts or implies a chance of winning. "Readiness" means document completeness only.
 
-### 1.2 User Personas
+### 1.3 Users
 
-**Persona A: Chloe Wong (fictional), Year 1 student, first-time applicant**
-
-- Age 18, BBA Year 1, local student, first-semester GPA 3.10, volunteers and leads a student society committee.
-- Goals: find out which scholarships she can actually apply for without reading dozens of long PDF notices; avoid missing a deadline.
-- Pain points: eligibility wording is confusing; requirements are scattered across different pages; she does not know which documents (transcript, reference letter, personal statement) are reused across applications.
-- Success for Chloe: within 10 minutes she has a shortlist, understands why she qualifies, and has a single checklist showing "2 of 4 ready".
-
-**Persona B: Mr David Lau (fictional), Scholarship Adviser, Faculty Student Office (future paying customer)**
-
-- Advises around 300 undergraduates per year on scholarships and awards.
-- Goals: reduce repetitive one-to-one eligibility questions; see which students are preparing which applications; send students to a trusted, neutral tool.
-- Pain points: students ask the same eligibility questions; late or incomplete submissions; no shared view of student preparation.
-- Success for David (Phase 2): an adviser account showing cohort readiness (document completeness only) and upcoming deadlines.
-
-### 1.3 Monetisation
-
-| Tier | Price (illustrative, HKD) | Includes | Phase |
+| Persona | Profile | Needs | Success looks like |
 |---|---|---|---|
-| Free | HK$0 | Full matching with eligibility reasons, comparison, combined checklist and evidence tracker, dashboard, up to 5 saved scholarships | 1 |
-| Seasonal Premium | HK$38 per scholarship season | Convenience only: unlimited saved scholarships, deadline reminders (email in Phase 2) | Display only in Phase 1 |
-| Institutional Licence | Quoted per institution | Adviser and institution accounts, cohort readiness view, custom scholarship listings | Display only in Phase 1 |
+| **Chloe Wong (fictional)**, primary user | Year 1 BBA, local, GPA 3.10, volunteers and leads a society committee; first-time applicant | Know which scholarships she can apply for without reading long notices; understand eligibility wording; see which documents are reused; never miss a deadline | Within 10 minutes she has a shortlist, understands why she qualifies, and has one checklist showing "2 of 4 ready" |
+| **Mr David Lau (fictional)**, future paying customer | Faculty scholarship adviser for around 300 undergraduates a year | Fewer repetitive eligibility questions; visibility of student preparation; a neutral tool to recommend | Phase 2 only: an adviser view of cohort readiness (document completeness only) and deadlines |
 
-**Fairness rule (non-negotiable):** paying never affects matching results, eligibility reasons, ordering, scholarship visibility or outcomes. Premium adds convenience only. This statement appears on the pricing page.
+### 1.4 Monetisation
+
+| Tier | Price (illustrative) | Includes | Phase 1 status |
+|---|---|---|---|
+| Free | HK$0 | Full matching with reasons, comparison, checklist, dashboard, up to 5 saved scholarships | Live |
+| Seasonal Premium | HK$38 per scholarship season | Convenience only: unlimited saved scholarships, deadline reminders | Display only |
+| Institutional Licence | Quoted per institution | Adviser and institution accounts, cohort readiness view, custom listings | Display only |
+
+**Fairness rule (non-negotiable):** paying never changes matches, eligibility reasons, ordering, scholarship visibility or outcomes. This statement appears on the pricing page.
 
 ---
 
-## 2. Phased Scope Isolation
+## 2. Goals and Success Metrics
 
-### 2.1 Phase 1: Core MVP (build now)
+Phase 1 tests one question: **does a transparent eligibility view plus a combined checklist help first-time applicants act?**
 
-| # | Feature | Route | Summary |
+Metrics are gathered in moderated sessions with 10 to 15 undergraduate testers, each starting from a freshly reset demo. The app records no usage data.
+
+| # | Metric | Target | How measured |
 |---|---|---|---|
-| P1-1 | Landing page | `/` | Value proposition, how it works (3 steps), trust statements, "Try the demo" call to action |
-| P1-2 | Profile page | `/profile` | Edit demo student profile; PDPO collection statement; save to browser storage |
-| P1-3 | Scholarship matches | `/matches` | Scholarships grouped as Eligible, Partial match, Not eligible, each with rule-by-rule reasons |
-| P1-4 | Scholarship detail | `/scholarships/:id` | Full criteria, reasons, required documents, deadlines, save button |
-| P1-5 | Comparison page | `/compare` | Side-by-side comparison of 2 to 3 selected scholarships |
-| P1-6 | Checklist and evidence tracker | `/checklist` | Combined, de-duplicated document list across saved scholarships with status tracking and evidence notes |
-| P1-7 | Dashboard | `/dashboard` | Upcoming deadline list and document readiness per saved scholarship |
-| P1-8 | Pricing page | `/pricing` | Display-only tiers; no payment; buttons open a "Demo only" dialog |
-| P1-9 | Demo controls | Global header | "Demo mode" badge and "Reset demo data" action |
-| P1-10 | Not found | `*` | Friendly 404 with link to dashboard |
+| M1 | Testers who save a complete profile within 5 minutes | 70% or more | Facilitator times the task |
+| M2 | Testers who compare at least 2 scholarships; mean number compared | 50% or more; mean 2.5 or more | Facilitator records compare use |
+| M3 | Testers who update at least 3 checklist statuses in one session | 60% or more | Facilitator counts changes |
+| M4 | Testers who correctly explain why a named scholarship is a Partial match | 80% or more | Post-task question, scoring sheet |
 
-### 2.2 Phase 2: Deferred (do not build now)
+---
 
-| # | Feature | Dependency |
+## 3. Scope
+
+### 3.1 Phase 1: MVP (built)
+
+| Route | Page | Purpose |
 |---|---|---|
-| P2-1 | Real login, sign-up and password reset | Auth provider, database |
-| P2-2 | Adviser and institution accounts, cohort readiness view | Auth with roles, database, institution data agreements |
-| P2-3 | Real payments for Seasonal Premium and invoicing for Institutional Licence | Payment provider, webhooks, server runtime |
+| `/` | Landing | Value proposition, how it works, example match, trust statements, "Try the demo" |
+| `/profile` | Profile | Edit the demo profile; privacy notice |
+| `/matches` | Matches | Scholarships grouped Eligible, Partial match, Not eligible, with reasons |
+| `/scholarships/:id` | Scholarship detail | Full criteria, reasons, documents, deadlines, Save |
+| `/compare` | Compare | Side-by-side comparison of 2 to 3 scholarships |
+| `/checklist` | Checklist | One de-duplicated document list with status and evidence notes |
+| `/dashboard` | Dashboard | Deadlines and readiness for saved scholarships |
+| `/pricing` | Pricing | Display-only tiers |
+| `/privacy` | Privacy statement | Full privacy notice |
+| `/sign-in` | Sign in (demo) | Shows where accounts will sit; continues with the demo account, collects nothing |
+| `*` | Not found | Friendly 404 |
+| All pages | Demo controls | Demo badge and "Reset demo data" |
+
+Phase 1 must not include real login or sign-up, email or password fields, payment or card inputs, file uploads, email capture, analytics or third-party scripts, or anything that appears to collect real personal data.
+
+### 3.2 Phase 2: Future Enhancements (not built)
+
+| # | Feature | Depends on |
+|---|---|---|
+| P2-1 | Real login, sign-up, password reset | Auth provider, database |
+| P2-2 | Adviser and institution accounts, cohort view | Roles, database, data agreements |
+| P2-3 | Real payments and invoicing | Payment provider, webhooks, server |
 | P2-4 | Document uploads | Object storage, malware scanning, retention policy |
-| P2-5 | Email reminders for deadlines | Email service, scheduled jobs, consent and unsubscribe |
-| P2-6 | Settings page (account, notifications, data export and deletion) | Auth, database |
-| P2-7 | Automated test suite (Vitest, React Testing Library, axe, wording scan, seed distribution test) and Lighthouse targets | Dev tooling, CI pipeline |
-| P2-8 | In-app usage metrics (local counters, `/demo-insights` page, JSON export) | Metrics design, PDPO statement update |
+| P2-5 | Email deadline reminders | Email service, scheduled jobs, consent |
+| P2-6 | Settings (account, notifications, data export and deletion) | Auth, database |
+| P2-7 | Automated tests and Lighthouse targets | Test tooling, CI pipeline |
+| P2-8 | In-app usage metrics | Metrics design, privacy notice update |
 
-**Phase 1 must not include:** login forms, password fields, payment forms, card inputs, file upload inputs, email capture, third-party analytics scripts, or any placeholder that appears to collect real personal data beyond the demo profile.
-
-Keep data access behind a `repository` layer (Section 4.4) so `localStorage` can later be swapped for an API without rewriting pages.
+All data access goes through a repository layer (Section 6.3) so browser storage can later be replaced by an API without rewriting pages.
 
 ---
 
-## 3. Architecture and UI Layout
+## 4. User Journey and Page Requirements
 
-### 3.1 Page Routes
+### 4.1 Core Journey (Chloe)
 
-| Route | Page | Primary components |
-|---|---|---|
-| `/` | Landing | `HeroSection`, `HowItWorksSteps`, `MatchPreview`, `TrustPanel`, `PrimaryCTA` |
-| `/profile` | Profile | `ProfileForm`, `PdpoStatement`, `SaveBar` |
-| `/matches` | Matches | `MatchFilters`, `MatchGroup`, `ScholarshipCard`, `EligibilityReasonList`, `CompareTray` |
-| `/scholarships/:id` | Scholarship detail | `ScholarshipHeader`, `EligibilityReasonList`, `RequiredDocumentsList`, `DeadlineTimeline`, `SaveButton` |
-| `/compare` | Comparison | `CompareTable`, `CompareSelector` |
-| `/checklist` | Checklist and evidence tracker | `ChecklistSummary`, `DocumentRow`, `StatusSelect`, `EvidenceNoteField`, `UsedByChips` |
-| `/dashboard` | Dashboard | `ReadinessCard`, `DeadlineList`, `SavedScholarshipsPanel`, `NextActionsPanel` |
-| `/pricing` | Pricing | `PricingTierCard`, `FairnessStatement`, `DemoOnlyDialog` |
-| `/privacy` | Privacy statement (added after launch) | `PdpoStatement` |
-| `*` | Not found | `EmptyState` |
+1. **Landing:** reads the value proposition and selects "Try the demo" (or "Sign in", then "Continue with the demo account").
+2. **Profile:** reviews the pre-filled profile, edits it, reads the privacy notice, saves.
+3. **Matches:** sees 4 Eligible, 4 Partial match, 4 Not eligible and expands the reasons.
+4. **Compare:** compares up to 3 scholarships on amount, deadlines, documents and criteria.
+5. **Save:** saves scholarships (free limit 5; a calm notice at the limit links to Pricing).
+6. **Checklist:** marks documents Ready and adds evidence notes.
+7. **Dashboard:** sees the nearest deadlines first and readiness per saved scholarship.
 
-Routing: React Router with `createBrowserRouter`. SPA fallback via `vercel.json` rewrite (Section 4.5).
+### 4.2 Global Layout
 
-### 3.2 Global Layout (desktop-first)
+- **Header:** logo; links to Dashboard, Matches, Compare, Checklist, Pricing, Profile and Sign in; demo badge "Demo mode: all scholarships and people are fictional."; "Reset demo data" button (confirmation dialog, then reseeds data and recalculates deadline dates from today).
+- The active link uses `aria-current="page"` plus a visible underline. Below 1024px, links collapse into a keyboard-operable Menu button.
+- "Skip to main content" is the first focusable element. Main content is at most 1200px wide.
+- **Footer on every page:** "All data is fictional. ScholarReady does not predict outcomes." and a "Privacy statement" link to `/privacy`.
+- At 768px width, the landing H1 and "Try the demo" button appear within the first 667px of screen height.
 
-```
-+--------------------------------------------------------------------------+
-| [Logo ScholarReady]  Dashboard  Matches  Compare  Checklist  Pricing     |
-|                                     [Demo mode]  [Profile]  [Reset demo] |
-+--------------------------------------------------------------------------+
-| Skip to main content (visible on focus)                                  |
-|                                                                          |
-|   <main> max-width 1200px, 12-column grid, 24px gutters                  |
-|                                                                          |
-+--------------------------------------------------------------------------+
-| Footer: "All data is fictional. ScholarReady does not predict outcomes." |
-|         Privacy statement link (to /privacy)                              |
-+--------------------------------------------------------------------------+
-```
-
-- Top navigation with text labels; active page marked with `aria-current="page"` plus a visible underline (not colour alone).
-- Below 1024px, navigation collapses into a menu button with an accessible disclosure pattern.
-- Above the fold: at 768px width, the landing page H1 and the "Try the demo" button must appear within the first 667px of screen height.
-
-### 3.3 Primary User Journey (Chloe)
-
-1. **Landing** `/`: reads value proposition, selects "Try the demo".
-2. **Profile** `/profile`: reviews the pre-filled demo profile, edits year of study, GPA, residency and financial need; reads the PDPO statement; saves.
-3. **Matches** `/matches`: sees 4 Eligible, 4 Partial match, 4 Not eligible. Opens reasons on a card: "Meets: Year of study is 1 (requires 1 or 2)", "Check: leadership role held for at least one year needs evidence".
-4. **Compare** `/compare`: adds 3 scholarships to the compare tray and compares amount, deadline, documents needed and criteria.
-5. **Save**: saves scholarships (free limit is 5; a calm notice at the limit links to pricing).
-6. **Checklist** `/checklist`: sees the combined list, e.g. "Academic transcript, used by 3 scholarships". Marks items Ready and adds evidence notes ("Requested from Registry on 10 Oct").
-7. **Dashboard** `/dashboard`: sees the nearest deadline first, and readiness such as "4 of 6 documents ready" per scholarship.
-
-### 3.4 Page Specifications
+### 4.3 Page Requirements and Acceptance Criteria
 
 **Landing `/`**
-- H1: "Find scholarships you qualify for, and get every application ready."
-- Three steps: Build your profile, See why you match, Track documents and deadlines.
-- Match preview (added after launch): below the three steps, a read-only card labelled "Example match (demo data)" showing the soonest-deadline Eligible scholarship for the current profile, calculated by the same eligibility engine as `/matches`, with its match badge, "X of Y criteria met" and a "See all matches" link to `/matches`. No Save or Compare buttons.
-- Social sharing tags (added after launch): `index.html` includes a meta description plus Open Graph and Twitter card tags (title, description, type, URL), so the link shows a preview card when shared.
-- Trust panel, four statements:
-  - "Matches are based on each scholarship's published criteria."
-  - "We never estimate whether you will win an award."
-  - "Your information stays in this browser."
-  - "All scholarships and people in this demo are fictional."
-- CTA navigates to `/profile` if the profile has never been saved, otherwise `/dashboard`.
+- H1: "Find scholarships you qualify for, and get every application ready." Three steps: Build your profile, See why you match, Track documents and deadlines.
+- Read-only card "Example match (demo data)": the soonest-deadline Eligible scholarship, calculated by the same engine as `/matches`, with match badge, "X of Y criteria met" and a "See all matches" link. No Save or Compare buttons.
+- Trust statements: "Matches are based on each scholarship's published criteria." "We never estimate whether you will win an award." "Your information stays in this browser." "All scholarships and people in this demo are fictional."
+- "Try the demo" opens `/profile` if the profile has never been saved, otherwise `/dashboard`.
+- `index.html` has a meta description plus Open Graph and Twitter card tags.
+- **Done when:** with the seed profile, the card shows Kowloon Business Leaders Bursary, Eligible, "3 of 3 criteria met"; "Try the demo" routes correctly before and after saving; a keyboard pass reaches every control with a visible focus ring; page source contains `og:title`, `og:description` and a meta description.
 
 **Profile `/profile`**
-- Fields: see `StudentProfile` (Section 5). Grouped into Study details, Background, Activities.
-- Every field has a visible `<label>`; helper text explains how the field is used for matching.
-- Inline validation plus an error summary at the top on failed submit; errors linked via `aria-describedby`.
-- `PdpoStatement` displayed above the Save button, not hidden in a modal (Section 7.2).
-- Save writes to storage and announces via a polite live region: "Profile saved. Matches updated."
+- Fields (Section 6.5) grouped into Study details, Background and Activities, each with a visible label and helper text explaining its use in matching. First-generation status offers "Prefer not to say".
+- Inline validation plus an error summary. GPA must be 0.00 to 4.30.
+- Privacy notice (Section 8.2) shown above Save, not in a dialog, in a section with `id="pdpo"`.
+- Saving announces "Profile saved. Matches updated." via a polite live region.
+- **Done when:** the seed profile loads pre-filled and edits persist after reload; GPA 5.00 shows an inline error and an error summary that receives focus; the notice is visible above Save.
 
 **Matches `/matches`**
-- Three groups in this order:
-  - **Eligible:** every criterion met.
-  - **Partial match:** no criterion failed, but at least one needs evidence or information you have not given.
-  - **Not eligible:** at least one criterion not met. Card still shows "1 of 2 criteria met" so students see how close they are.
-- Filters: award type (merit, need-based, leadership, community, sports, arts), minimum amount, deadline within (14, 30, 60 days).
-- Sort: deadline soonest (default), amount highest, name A to Z. Sorting never uses any likelihood score.
-- `ScholarshipCard`: name, provider, amount, deadline with days remaining, match group badge (icon plus text), "X of Y criteria met", expandable `EligibilityReasonList`, Save and Add to compare buttons.
-- "How matching works" note: "We compare your profile with each scholarship's published criteria. We do not predict who will win."
+- Groups in order: **Eligible** (every criterion met), **Partial match** (none failed, at least one needs evidence or missing information), **Not eligible** (at least one not met; card still shows "X of Y criteria met").
+- Filters: award type, minimum amount, deadline within 14, 30 or 60 days. Sort: deadline soonest (default), amount highest, name A to Z. Sorting never uses a likelihood score.
+- Card: name, provider, amount, deadline with days remaining, match badge (icon plus text), "X of Y criteria met", expandable reasons (Section 5.3), Save and Add to compare.
+- Note: "We compare your profile with each scholarship's published criteria. We do not predict who will win."
+- **Done when:** the seed profile gives exactly the groups in Section 9.5; every reason follows Section 5.3; changing GPA from 3.10 to 3.70 moves Peak Academic Excellence to Eligible without a page reload.
 
 **Scholarship detail `/scholarships/:id`**
-- Header, description, criteria with reasons, required documents with current status from the checklist, deadline timeline, source label "Fictional provider (demo)".
+- Header, description, criteria with reasons, required documents with their checklist status, deadline timeline, label "Fictional provider (demo)", Save button.
+- **Done when:** every seeded id renders; an unknown id shows the not found state; Save is reflected on Dashboard and Checklist.
 
 **Compare `/compare`**
-- 2 to 3 scholarships; rows: amount, provider, award type, match group, criteria met, one row per criterion type, documents required, deadlines, renewable.
-- Criterion rows (revised after launch) are grouped by criterion type with plain labels (GPA, Year of study, Faculty, Residency, Financial need, Activities, Languages, First-generation student), never internal rule ids. Each cell shows that scholarship's requirement and the result, e.g. "Requires 3.60 or above. Does not meet (your GPA: 1.50)". A scholarship with no rule of that type shows "No requirement". Only criterion types used by at least one compared scholarship appear.
-- Rendered as a real `<table>` with `<th scope>` headers and a `<caption>`.
-- Empty state links back to `/matches`.
+- 2 to 3 scholarships in a real `<table>` with `<caption>` and `<th scope>` headers. Rows: amount, provider, award type, match group, criteria met, one row per criterion type, documents, deadlines, renewable.
+- Criterion rows use plain labels (GPA, Year of study, Faculty, Residency, Financial need, Activities, Languages, First-generation student). Cells show the requirement and result, e.g. "Requires 3.60 or above. Does not meet (your GPA: 1.50)", or "No requirement". Only criterion types used by a compared scholarship appear.
+- **Done when:** adding a fourth is blocked with an announced message; no rule ids or "Not applicable" appear; the empty state links to `/matches`.
 
-**Checklist and evidence tracker `/checklist`**
-- Scope: documents required by saved scholarships only.
-- De-duplication: one row per `DocumentItem`, with `UsedByChips` listing every saved scholarship that needs it.
-- Row fields: name, description, status (`not_started`, `in_progress`, `ready`), evidence note (free text, max 280 characters), last updated, earliest related deadline.
-- Summary bar: "4 of 6 ready" plus a progress bar with a text equivalent.
-- Filter by status and by scholarship.
+**Checklist `/checklist`**
+- Documents required by saved scholarships only, one row per document with chips naming each scholarship that needs it. Row: name, description, status (Not started, In progress, Ready), evidence note (max 280 characters), last updated, earliest related deadline.
+- Summary "X of Y ready" with a progress bar and text equivalent. Filters by status and scholarship.
+- **Done when:** the seed shows 4 rows and "2 of 4 ready", with Personal statement listed once for both Victoria Harbour and Lion Rock; a status change updates the summary and Dashboard immediately and after reload; notes stop at 280 characters with a live count and persist.
 
 **Dashboard `/dashboard`**
-- `DeadlineList`: all deadlines for saved scholarships, ascending; overdue items shown in a separate "Passed" group; labels "Due in 5 days", "Due today", "Passed 3 days ago".
-- `ReadinessCard` per saved scholarship: "4 of 6 documents ready". No percentages styled as probability, no gauges implying odds.
-- `NextActionsPanel`: up to 3 rule-derived actions (e.g. "Start personal statement, needed for 2 scholarships due within 14 days").
+- Deadlines for saved scholarships in date order, overdue items in a separate "Passed" group, labels such as "Due in 5 days", "Due today", "Passed 3 days ago".
+- One readiness card per saved scholarship: "X of Y documents ready". No percentages or gauges.
+- Up to 3 rule-based next actions, e.g. "Start personal statement, needed for 2 scholarships due within 14 days".
+- **Done when:** the seed shows Victoria Harbour "1 of 2 documents ready" and Lion Rock "1 of 3 documents ready"; with no saved scholarships, an empty state links to `/matches`.
 
 **Pricing `/pricing`**
-- Three `PricingTierCard`s per Section 1.3, labelled "Illustrative pricing (demo)".
-- `FairnessStatement` directly beneath the tiers.
-- Buttons open `DemoOnlyDialog`: "Payments are not available in this demo. No charge has been made."
+- Three tiers (Section 1.4) labelled "Illustrative pricing (demo)", with the fairness statement beneath.
+- Every tier button opens a dialog: "Payments are not available in this demo. No charge has been made."
+- **Done when:** the dialog traps focus, Escape closes it and focus returns to the button; the page and bundle contain no payment SDK or card input.
 
-### 3.5 Key Shared Components
+**Privacy `/privacy`**
+- H1 "Privacy statement", the notice from Section 8.2, and a link back to `/profile`.
+- **Done when:** the footer link opens it and a direct refresh does not 404.
 
-| Component | Responsibility |
-|---|---|
-| `AppShell` | Header, skip link, main landmark, footer |
-| `DemoBadge` | Persistent "Demo mode: fictional data" indicator |
-| `ResetDemoButton` | Confirmation dialog, then reseed storage |
-| `EligibilityReasonList` | Renders each `RuleResult` with icon plus text: Meets, Does not meet, Check |
-| `MatchGroupBadge` | Text plus icon; never colour alone |
-| `DeadlineChip` | Date as `D MMM YYYY` (e.g. 14 Nov 2026) plus relative days |
-| `ReadinessMeter` | "X of Y ready" text plus bar with accessible text equivalent |
-| `Dialog` | Accessible modal: focus trap, Escape closes, labelled, focus restored to trigger |
-| `LiveRegion` | Polite announcements for saves and status changes |
+**Sign in `/sign-in` (demo)**
+- H1 "Sign in". Text: "Accounts are not available in this demo. Continue with the fictional demo account to try every feature."
+- Primary button "Continue with the demo account": opens `/profile` if the profile has never been saved, otherwise `/dashboard` (same rule as "Try the demo").
+- A "Create an account" section stating: "Sign-up, sign-in and password reset will be added in a later release." No input fields of any kind.
+- **Done when:** the header "Sign in" link opens the page; the button routes correctly before and after saving a profile; the page contains no form fields; a direct refresh does not 404.
 
----
+**Not found `*`**
+- Friendly message with a link to `/dashboard`.
 
-## 4. Technical Stack Constraints
-
-### 4.1 Stack
-
-| Layer | Choice |
-|---|---|
-| Build tool | Vite (React + TypeScript template) |
-| UI library | React 18+ |
-| Language | TypeScript, `strict: true` |
-| Styling | Tailwind CSS |
-| Routing | React Router v6+ |
-| State | React context plus `useReducer`; no external state library |
-| Persistence | `localStorage` via a typed repository layer |
-| Dates | Native `Date` and `Intl.DateTimeFormat` (`en-GB`) |
-| Testing | Manual checks only in Phase 1 (Section 9); automated suite deferred to Phase 2 (P2-7) |
-| Linting | ESLint with `jsx-a11y`, Prettier |
-
-Next.js static export is an acceptable alternative only if every route is statically exportable and `:id` pages are pre-generated from seed data. Default choice is Vite.
-
-### 4.2 Hard Constraints
-
-- Front end only. No server, no API routes, no serverless functions.
-- No database. No authentication. A single demo user is loaded from seed.
-- No secret keys, no `.env` files, no environment variables at build or runtime.
-- No third-party scripts, trackers, external CDN fonts or analytics. Use a system font stack or self-hosted font files.
-- All data fictional; no real scholarship names, providers, people or university trademarks.
-
-### 4.3 Suggested File Structure
-
-```
-scholarready/
-  index.html
-  vercel.json
-  package.json
-  tsconfig.json
-  tailwind.config.ts
-  postcss.config.js
-  src/
-    main.tsx
-    App.tsx
-    routes.tsx
-    styles/index.css
-    types/models.ts
-    data/seed/
-      student.ts
-      scholarships.ts
-      rules.ts
-      documents.ts
-      deadlines.ts
-      index.ts
-    lib/
-      repository.ts        // localStorage read/write, versioned
-      eligibility.ts       // pure rule engine
-      checklist.ts         // de-duplication and readiness
-      deadlines.ts         // sorting and relative labels
-      dates.ts
-    state/
-      AppStateProvider.tsx
-      reducer.ts
-    components/
-      layout/  common/  matches/  checklist/  dashboard/  pricing/  profile/
-    pages/
-      LandingPage.tsx  ProfilePage.tsx  MatchesPage.tsx
-      ScholarshipDetailPage.tsx  ComparePage.tsx  ChecklistPage.tsx
-      DashboardPage.tsx  PricingPage.tsx  NotFoundPage.tsx
-```
-
-### 4.4 Persistence Layer
-
-- Single storage key: `scholarready:v1`.
-- Stored shape: `{ schemaVersion: 1, seededAt, profile, profileSavedAt, savedScholarshipIds, compareIds, documentProgress }`.
-- Scholarships, rules, documents and deadlines are read from seed modules (immutable). Only user-changeable state is persisted.
-- On load: if the key is missing or `schemaVersion` differs, reseed.
-- Wrap every `localStorage` call in `try/catch`; if storage is unavailable, run in memory and show: "Changes will not be kept after you close this tab."
-- Expose `repository.load()`, `repository.save(state)`, `repository.reset()` only. Components never touch `localStorage` directly.
-
-### 4.5 Deployment (Vercel)
-
-- Framework preset: Vite. Build command `npm run build`. Output directory `dist`. No environment variables.
-- `vercel.json` for SPA routing:
-
-```json
-{
-  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
-}
-```
-
-### 4.6 Seed Date Strategy
-
-Deadlines are stored as `offsetDays` relative to the day of first seeding and converted to ISO dates when seeded, so the demo stays meaningful whenever it is opened. "Reset demo data" recalculates dates from the current day.
+**Global, done when:** `npm install && npm run build` succeeds with no environment variables; deep links work on Vercel; no requests go to external domains during a full journey; "Reset demo data" restores the seed, including recalculated dates.
 
 ---
 
-## 5. Data Model
+## 5. Matching and Readiness Logic
 
-### 5.1 Entity Relationships
+### 5.1 Matching (`src/lib/eligibility.ts`)
 
-```
-StudentProfile 1 ──< SavedScholarship >── 1 Scholarship
-Scholarship    1 ──< EligibilityRule
-Scholarship    1 ──< Deadline
-Scholarship    >──< DocumentItem        (via Scholarship.requiredDocumentIds)
-StudentProfile 1 ──< DocumentProgress >── 1 DocumentItem
-EligibilityRule + StudentProfile ──> RuleResult   (derived, not stored)
-RuleResult[]                     ──> MatchResult  (derived, not stored)
-```
+Pure, deterministic functions. No machine learning, weighting, scoring or probability. Free and Premium users get identical results.
 
-### 5.2 TypeScript Definitions (`src/types/models.ts`)
-
-```ts
-export type YearOfStudy = 1 | 2 | 3 | 4;
-export type Residency = 'local' | 'non_local';
-export type Faculty =
-  | 'Arts' | 'Business' | 'Education' | 'Engineering'
-  | 'Law' | 'Medicine' | 'Science' | 'Social Science';
-
-export type ActivityTag =
-  | 'community_service' | 'leadership' | 'sports' | 'arts'
-  | 'research' | 'entrepreneurship' | 'exchange';
-
-export interface StudentProfile {
-  id: string;                            // 'demo-student'
-  displayName: string;                   // 'Chloe Wong (Demo)'
-  yearOfStudy: YearOfStudy;
-  faculty: Faculty;
-  programme: string;
-  gpa: number | null;                    // 0.00 to 4.30; null if not yet available
-  residency: Residency;
-  financialNeedDeclared: boolean;        // self-declared yes or no, no figures
-  activities: ActivityTag[];
-  languages: string[];                   // e.g. ['English', 'Cantonese', 'Putonghua']
-  firstGenerationStudent: boolean | null; // null = 'Prefer not to say'
-  updatedAt: string;                     // ISO
-}
-
-export type AwardType =
-  | 'merit' | 'need_based' | 'leadership' | 'community' | 'sports' | 'arts';
-
-export interface Scholarship {
-  id: string;                            // 'sch-001'
-  name: string;                          // fictional
-  provider: string;                      // fictional, suffixed '(fictional)'
-  awardType: AwardType;
-  amountHKD: number;
-  renewable: boolean;
-  places: number | null;
-  summary: string;
-  description: string;
-  eligibilityRuleIds: string[];
-  requiredDocumentIds: string[];
-  deadlineIds: string[];
-  isFictional: true;
-}
-
-export type RuleField =
-  | 'yearOfStudy' | 'faculty' | 'gpa' | 'residency'
-  | 'financialNeedDeclared' | 'activities' | 'languages' | 'firstGenerationStudent';
-
-export type RuleOperator =
-  | 'in'          // profile value is one of value[]
-  | 'gte'         // number
-  | 'lte'         // number
-  | 'equals'      // string or boolean
-  | 'includesAny' // profile array contains any of value[]
-  | 'includesAll';// profile array contains all of value[]
-
-export interface EligibilityRule {
-  id: string;                            // 'r-001-1'
-  scholarshipId: string;
-  field: RuleField;
-  operator: RuleOperator;
-  value: string | number | boolean | Array<string | number>;
-  label: string;                         // plain-language criterion
-  requiresManualCheck: boolean;          // true when provider must verify evidence
-}
-
-export type RuleOutcome = 'met' | 'not_met' | 'check';
-
-export interface RuleResult {           // derived
-  ruleId: string;
-  outcome: RuleOutcome;
-  explanation: string;                   // 'Your GPA is 3.10. This scholarship requires 3.60 or above.'
-}
-
-export type MatchGroup = 'eligible' | 'partial' | 'not_eligible';
-
-export interface MatchResult {          // derived
-  scholarshipId: string;
-  group: MatchGroup;
-  metCount: number;
-  totalCount: number;
-  results: RuleResult[];
-}
-
-export type DocumentCategory =
-  | 'academic' | 'identity' | 'financial' | 'reference'
-  | 'written' | 'activity_evidence' | 'language';
-
-export interface DocumentItem {
-  id: string;                            // 'doc-transcript'
-  name: string;
-  category: DocumentCategory;
-  description: string;
-  guidance: string;                      // generic, fictional
-}
-
-export type DocumentStatus = 'not_started' | 'in_progress' | 'ready';
-
-export interface DocumentProgress {
-  studentId: string;
-  documentId: string;
-  status: DocumentStatus;
-  evidenceNote: string;                  // max 280 chars
-  updatedAt: string;
-}
-
-export type DeadlineType =
-  | 'application_close' | 'reference_due' | 'interview' | 'result_release';
-
-export interface Deadline {
-  id: string;                            // 'dl-001-close'
-  scholarshipId: string;
-  type: DeadlineType;
-  label: string;
-  offsetDays: number;                    // seed only
-  date: string;                          // ISO, computed at seeding
-}
-
-export interface SavedScholarship {
-  studentId: string;
-  scholarshipId: string;
-  savedAt: string;
-}
-```
-
-### 5.3 Matching Logic (`src/lib/eligibility.ts`)
-
-Pure, deterministic functions (unit tests deferred to Phase 2; verify manually with Section 10.4):
-
-1. For each rule, compare the profile field with the rule value using the operator.
-2. Rule outcome:
-   - `not_met` if the comparison fails.
-   - `check` if the profile value is `null`, or the comparison passes but `requiresManualCheck` is true.
-   - `met` otherwise.
-3. Match group:
-   - `not_eligible` if any rule is `not_met`.
-   - `partial` if no rule is `not_met` and at least one is `check`.
-   - `eligible` if every rule is `met`.
-4. `metCount` counts `met` outcomes only. Every explanation states the student's value and the requirement in plain language.
-5. Explanation format (revised after launch; exact wording for all 29 criteria in Section 5.5). Applies everywhere a reason appears (`/matches`, `/scholarships/:id`, `/compare`, landing preview, dashboard). Never show "Your value is", rule ids (e.g. "r-009-1") or code values (e.g. "community_service"). Each reason names the criterion, states the student's value, then the requirement:
-
-| Criterion | Example wording |
+| Rule outcome | When |
 |---|---|
-| GPA (2 decimals) | "Your GPA is 3.10. This scholarship requires 3.60 or above." |
-| Year of study | "You are in Year 1. This scholarship is open to Years 1 to 4." / "...open to Year 1 students only." / "...open to Years 3 and 4." |
-| Faculty | "Your faculty is Business. This scholarship is open to Arts and Education students." |
-| Residency | "You are a local student. This scholarship is open to local students." |
-| Financial need | "You have declared financial need. This scholarship requires a declaration of financial need." |
-| Activities | "Your activities include community service and leadership. This scholarship requires community service." |
-| Languages | "You listed English, Cantonese and Putonghua. This scholarship requires all three." |
-| First-generation student | "You chose not to say whether you are a first-generation student. This scholarship is for first-generation students." |
-| Manual check (Check outcome) | Add a second sentence: "The provider will ask for evidence of this." |
-| Missing value (Check outcome) | "You have not provided your GPA yet. Add it on your profile to check this criterion." |
+| `not_met` | The profile value fails the rule |
+| `check` | The profile value is missing, or the rule passes but needs manual evidence (marked M) |
+| `met` | Otherwise |
 
-Display labels for codes: community_service = community service; leadership = leadership; sports = sports; arts = arts; research = research; entrepreneurship = entrepreneurship; exchange = exchange experience. Lists join with commas and "and"; ranges of consecutive years read "Years 1 to 4".
+A scholarship is **Not eligible** if any rule is `not_met`, **Partial match** if none is `not_met` and at least one is `check`, otherwise **Eligible**. "X of Y criteria met" counts `met` outcomes only.
 
-No machine learning, no weighting, no scoring, no probability. Free and Premium users receive identical results.
+### 5.2 Readiness (`src/lib/checklist.ts`)
 
-### 5.4 Checklist and Readiness Logic (`src/lib/checklist.ts`)
+- Required documents are the union of documents needed by saved scholarships, de-duplicated.
+- Per scholarship: its Ready documents out of its required documents ("1 of 2 documents ready").
+- Overall: Ready unique documents out of all unique documents ("2 of 4 ready").
 
-- Required documents = union of `requiredDocumentIds` across saved scholarships, de-duplicated by `id`.
-- Readiness per scholarship = its required documents with status `ready` / its total required documents, shown as "4 of 6 ready".
-- Overall checklist readiness = ready unique documents / total unique documents.
+### 5.3 Reason Wording
 
-### 5.5 Reason Wording for Every Criterion (added after launch)
+Every reason on every screen (Matches, detail pages, Compare, landing card, Dashboard) is **the student sentence** followed by **the requirement sentence** (the rule's label, Section 9.4). Example: "Your activities include community service and leadership. This scholarship requires community service."
 
-Every reason on every screen is built from two fixed parts: **the student sentence** (Table A, from the current profile) followed by **the requirement sentence** (Table B, stored as the rule `label`). "Your value is", "This criterion requires", rule ids and code values must never appear anywhere on the website.
+Never shown anywhere: "Your value is", "This criterion requires", rule ids (e.g. "r-009-1") or code values (e.g. "community_service").
 
-**Table A: Student sentence (by criterion type)**
-
-| Criterion type | Wording |
+| Criterion | Student sentence |
 |---|---|
-| GPA | "Your GPA is 3.10." (two decimals) / not given: "You have not provided your GPA yet." |
+| GPA (two decimals) | "Your GPA is 3.10." / missing: "You have not provided your GPA yet." |
 | Year of study | "You are in Year 1." |
 | Faculty | "Your faculty is Business." |
 | Residency | "You are a local student." / "You are a non-local student." |
 | Financial need | "You have declared financial need." / "You have not declared financial need." |
 | Activities | "Your activities include community service and leadership." / none: "You have not listed any activities." |
 | Languages | "You listed English, Cantonese and Putonghua." / none: "You have not listed any languages." |
-| First-generation student | yes: "You are a first-generation university student." / no: "You are not a first-generation university student." / not given: "You chose not to say whether you are a first-generation university student." |
+| First-generation | "You are a first-generation university student." / "You are not a first-generation university student." / "You chose not to say whether you are a first-generation university student." |
 
-If the profile value is missing, add: "Add this on your profile to check this criterion."
-
-**Table B: Requirement sentence (all 29 criteria)**
-
-| Scholarship | Criterion | Requirement sentence |
-|---|---|---|
-| sch-001 Victoria Harbour | Year of study | "This scholarship is open to Year 1 students only." |
-| sch-001 Victoria Harbour | GPA | "This scholarship requires a GPA of 3.00 or above." |
-| sch-001 Victoria Harbour | Residency | "This scholarship is open to local students." |
-| sch-002 Lion Rock | Activities | "This scholarship requires community service." |
-| sch-002 Lion Rock | Year of study | "This scholarship is open to Years 1 to 4." |
-| sch-003 Kowloon | Faculty | "This scholarship is open to Business students." |
-| sch-003 Kowloon | Activities | "This scholarship requires leadership experience." |
-| sch-003 Kowloon | GPA | "This scholarship requires a GPA of 2.80 or above." |
-| sch-004 Pearl River | Financial need | "This scholarship requires a declaration of financial need." |
-| sch-004 Pearl River | Residency | "This scholarship is open to local students." |
-| sch-005 Tai Mo Shan | Activities | "This scholarship requires leadership experience." |
-| sch-005 Tai Mo Shan | Year of study | "This scholarship is open to Years 1 and 2." |
-| sch-005 Tai Mo Shan | Leadership duration (M) | "This scholarship requires a leadership role held for at least one year. The provider will ask for evidence of this." |
-| sch-006 Lantau | Languages (M) | "This scholarship requires English, Cantonese and Putonghua. The provider will ask for evidence of this." |
-| sch-006 Lantau | GPA | "This scholarship requires a GPA of 3.00 or above." |
-| sch-007 Sai Kung | First-generation student | "This scholarship is for first-generation university students." |
-| sch-007 Sai Kung | Financial need | "This scholarship requires a declaration of financial need." |
-| sch-007 Sai Kung | Residency | "This scholarship is open to local students." |
-| sch-008 Tsing Yi | Activities | "This scholarship requires community service." |
-| sch-008 Tsing Yi | Volunteer hours (M) | "This scholarship requires at least 50 verified volunteer hours. The provider will ask for evidence of this." |
-| sch-009 Peak Academic | GPA | "This scholarship requires a GPA of 3.60 or above." |
-| sch-009 Peak Academic | Year of study | "This scholarship is open to Years 1 to 4." |
-| sch-010 Shek O | Activities | "This scholarship requires sports involvement." |
-| sch-010 Shek O | Year of study | "This scholarship is open to Years 1 to 4." |
-| sch-011 Cheung Chau | Activities | "This scholarship requires arts involvement." |
-| sch-011 Cheung Chau | Faculty | "This scholarship is open to Arts and Education students." |
-| sch-012 Sha Tin | Year of study | "This scholarship is open to Years 3 and 4." |
-| sch-012 Sha Tin | Faculty | "This scholarship is open to Science and Engineering students." |
-| sch-012 Sha Tin | Activities | "This scholarship requires research experience." |
-
-Example full reason: "Your activities include community service and leadership. This scholarship requires community service."
+- If a value is missing, add: "Add this on your profile to check this criterion."
+- Activity labels: community service, leadership, sports, arts, research, entrepreneurship, exchange experience.
+- Lists join with commas and "and"; consecutive years read "Years 1 to 4".
 
 ---
 
-## 6. Third-Party API and Payment Boundaries
+## 6. Technical Stack and Data Model
 
-### 6.1 Phase 1
+### 6.1 Stack
 
-- **No third-party APIs.** No requests to external domains.
-- **No payments.** Pricing page is display-only; no payment SDKs, card fields or checkout redirects.
-- **No email, SMS or push.** Reminders appear only as a described Premium feature.
-- **No uploads.** The evidence tracker stores a status and a text note only.
-- **No analytics or error-tracking services.** Success metrics are measured through tester sessions only (Section 8).
+Vite, React 18+, TypeScript (`strict`), Tailwind CSS, React Router v6+ (`createBrowserRouter`), React context with `useReducer`, browser `localStorage` via a repository layer, native `Intl` dates (`en-GB`), ESLint with `jsx-a11y`, Prettier. Phase 1 testing is manual (Section 4.3); automated tests are Phase 2.
 
-### 6.2 Phase 2 Requirements (planning only)
+### 6.2 Constraints
 
-| Need | Likely service type | Notes |
+- Front end only: no server, API routes, database or authentication. One demo user loaded from seed.
+- No secret keys, `.env` files or environment variables.
+- No third-party scripts, trackers, external fonts or analytics.
+- All names, providers and people fictional; no real trademarks.
+
+### 6.3 Persistence
+
+- One storage key, `scholarready:v1`, holding `{ schemaVersion: 1, seededAt, profile, profileSavedAt, savedScholarshipIds, compareIds, documentProgress }`. Scholarships, rules, documents and deadlines are read-only seed data.
+- Reseed if the key is missing or the schema version differs.
+- Every storage call is wrapped in `try/catch`; if storage is unavailable the app runs in memory and shows "Changes will not be kept after you close this tab."
+- Only `load()`, `save(state)` and `reset()` are exposed; components never touch storage directly.
+- Deadlines are stored as day offsets and converted to dates at seeding, so the demo stays current; Reset recalculates them from today.
+
+### 6.4 Deployment
+
+Vercel, Vite preset, build `npm run build`, output `dist`, no environment variables. `vercel.json` rewrites all paths to `/index.html` so deep links work.
+
+### 6.5 Data Model
+
+Full type definitions are in `src/types/models.ts`.
+
+| Entity | Key fields | Notes |
 |---|---|---|
-| Authentication and password reset | Managed auth (e.g. Supabase Auth, Auth0, Clerk) | Email verification, rate limiting, roles for student, adviser, institution admin |
-| Database | Managed Postgres | Row-level security per student and institution |
-| Payments | Stripe or a provider supporting HK merchants | Seasonal Premium as a one-off seasonal purchase; Institutional Licence via invoice; webhook endpoint required |
-| Document uploads | Object storage with signed URLs | File type and size limits, malware scan, retention and deletion schedule |
-| Email reminders | Transactional email service plus scheduled jobs | Explicit opt-in, unsubscribe, reminder timing settings |
-| Server runtime | Serverless functions or a small API | Introduces environment variables and secret management |
-| Analytics | Privacy-respecting product analytics | Consent banner and PDPO statement update |
-| Institutional data | Data processing agreement per institution | Adviser access limited to readiness and deadlines by default |
+| StudentProfile | yearOfStudy (1 to 4), faculty, programme, gpa (0.00 to 4.30 or empty), residency (local, non-local), financialNeedDeclared (yes/no only), activities, languages, firstGenerationStudent (yes, no, prefer not to say) | Single demo user |
+| Scholarship | name, provider, award type, amount (HK$), renewable, places, summary, description, rule, document and deadline ids | 12, read-only |
+| EligibilityRule | field, operator (in, gte, lte, equals, includesAny, includesAll), value, label (requirement sentence), requiresManualCheck | 29, read-only |
+| DocumentItem | name, category, description, guidance | 9, read-only |
+| Deadline | type (application close, reference due, interview, result release), label, offsetDays, date | 18, read-only |
+| SavedScholarship | scholarshipId, savedAt | User state |
+| DocumentProgress | documentId, status, evidenceNote (max 280), updatedAt | User state |
+| RuleResult, MatchResult | outcome, explanation; group, met and total counts | Calculated, never stored |
 
-Phase 2 introduces environment variables and secrets; none may be added during Phase 1.
+### 6.6 Non-Functional Requirements
 
----
-
-## 7. Compliance and Trust
-
-### 7.1 Accessibility: WCAG 2.2 AA
-
-| Requirement | Implementation |
+| Area | Requirement |
 |---|---|
-| Text contrast | At least 4.5:1 for body text; at least 3:1 for large text and UI component boundaries |
-| Focus visible | Every interactive element shows a focus ring (`focus-visible:ring-2 focus-visible:ring-offset-2`), ring colour at least 3:1 against adjacent colours; outlines never removed without replacement |
-| Focus not obscured (2.4.11) | Sticky header never covers the focused element; `scroll-margin-top` on focus targets |
-| Target size (2.5.8) | Interactive targets at least 24 by 24 CSS px |
-| Keyboard | Every feature usable by keyboard; logical tab order; no traps except managed dialogs |
-| Skip link | First focusable element, "Skip to main content" |
-| Landmarks and headings | One `<h1>` per page; `header`, `nav`, `main`, `footer` landmarks |
-| Forms | Visible labels, `aria-describedby` for hints and errors, error summary on submit, no placeholder-only labels |
-| Colour independence | Status and match groups use icon plus text, never colour alone |
-| Dynamic updates | Saves and status changes announced through a polite live region |
-| Redundant entry (3.3.7) | Profile entered once and reused across pages |
-| Motion | Respect `prefers-reduced-motion` |
-| Zoom | Text readable and controls usable at 200% browser zoom in a 1280px desktop window |
-| Language | `<html lang="en-GB">` |
+| Performance | No noticeable delay on a standard laptop; no heavy libraries beyond the stack |
+| Browsers | Latest two versions of Chrome, Edge, Safari, Firefox |
+| Locale | UK English; dates like 14 Nov 2026; currency HK$ with thousands separators |
+| Reliability | Usable when storage is unavailable (in-memory fallback) |
+| Code quality | TypeScript strict and ESLint clean |
 
-**Suggested palette (verify with a contrast checker before use)**
+---
 
-| Token | Hex | Use |
+## 7. Third-Party APIs and Payments
+
+**Phase 1:** none. No external requests, payment SDKs, card fields, email, SMS, uploads, analytics or error tracking. The evidence tracker stores a status and a text note only.
+
+**Phase 2 would need:**
+
+| Need | Service type | Notes |
 |---|---|---|
-| `ink` | `#1F2937` | Body text on white |
-| `primary` | `#1D4ED8` | Buttons, links on white |
-| `success-text` | `#166534` | "Meets" text |
-| `danger-text` | `#B91C1C` | "Does not meet" text |
-| `warning-text` | `#92400E` | "Check" text |
-| `focus` | `#F59E0B` with dark offset | Focus ring |
+| Authentication | Managed auth (e.g. Supabase Auth, Auth0, Clerk) | Email verification, rate limiting, student, adviser and admin roles |
+| Database | Managed Postgres | Row-level security per student and institution |
+| Payments | Stripe or another HK-supported provider | One-off seasonal purchase; invoices for licences; webhook endpoint |
+| Uploads | Object storage with signed URLs | Size and type limits, malware scan, retention schedule |
+| Reminders | Transactional email plus scheduled jobs | Opt-in and unsubscribe |
+| Analytics | Privacy-respecting analytics | Consent banner and updated privacy notice |
+| Institutional data | Data processing agreement | Adviser access limited to readiness and deadlines |
 
-### 7.2 Hong Kong PDPO Personal Information Collection Statement
+Phase 2 introduces a server, environment variables and secrets; none may be added in Phase 1.
 
-Displayed on `/profile` above the Save button in a headed section with `id="pdpo"`, and on its own page `/privacy` (added after launch), which the footer privacy link opens:
+---
+
+## 8. Compliance and Trust
+
+### 8.1 Accessibility (WCAG 2.2 AA)
+
+- Contrast at least 4.5:1 for body text and 3:1 for large text, UI boundaries and focus rings.
+- Visible focus ring on every interactive element; the sticky header never covers the focused element.
+- Targets at least 24 by 24 px; everything usable by keyboard with no traps outside dialogs.
+- One H1 per page; header, nav, main and footer landmarks; `<html lang="en-GB">`.
+- Visible form labels, hints and errors linked with `aria-describedby`, error summary on submit.
+- Status and match groups use icon plus text, never colour alone.
+- Saves and status changes announced in a polite live region.
+- Respect `prefers-reduced-motion`; usable at 200% zoom in a 1280px window.
+- Palette (check with a contrast tool): ink #1F2937, primary #1D4ED8, success #166534, danger #B91C1C, warning #92400E, focus ring #F59E0B with dark offset.
+
+### 8.2 Hong Kong PDPO Personal Information Collection Statement
+
+Shown on `/profile` above Save (`id="pdpo"`) and on `/privacy`:
 
 > **Personal Information Collection Statement (Demo)**
 >
@@ -620,195 +326,128 @@ Displayed on `/profile` above the Save button in a headed section with `id="pdpo
 >
 > **Demo notice:** This is a demonstration using fictional data. Please do not enter real personal identifiers such as your HKID number.
 
-Data minimisation:
-- Do not collect HKID numbers, dates of birth, addresses, phone numbers, income figures or family details.
-- Financial need is a self-declared yes or no only.
-- Optional sensitive fields offer "Prefer not to say".
-- No cookie consent banner is needed: the app sets no cookies and uses browser storage only to run the demo.
+- Never collect HKID numbers, dates of birth, addresses, phone numbers, income figures or family details. Financial need is yes/no only; sensitive optional fields offer "Prefer not to say".
+- No cookie banner is needed: the app sets no cookies and uses browser storage only to run the demo.
 - "Reset demo data" deletes all stored information, meeting the right-to-erasure principle (GDPR Article 17).
 
-### 7.3 Matching Transparency
+### 8.3 Transparency and Wording
 
-- Matching is rule-based, using the visible criteria in `EligibilityRule`. No AI prediction, machine learning or opaque scoring.
-- Every match shows every criterion and whether it is met, not met or needs checking, with a reason.
-- Sorting is by deadline, amount or name only.
+- Matching uses only the visible rules; every criterion is shown with its result and reason; sorting uses only deadline, amount or name.
+- Banned in any user-facing text, including negated statements: "chance", "likelihood", "probability", "odds", "win rate", "success score", "strong candidate", or any percentage presented as an outcome. Before release, a text search of `src/` for these terms must return nothing.
 
-### 7.4 Readiness Wording
+### 8.4 Fictional Data and Fairness
 
-- Readiness = document completeness only, e.g. "4 of 6 ready".
-- Prohibited in any user-facing string: "chance", "likelihood", "probability", "odds", "win rate", "success score", "strong candidate", or any percentage presented as an outcome. This applies to negated statements too, so trust copy uses "We never estimate whether you will win an award" instead.
-- Before release, run a project-wide text search of `src/` for these terms; the result must be empty. An automated wording test is Phase 2 (P2-7).
-
-### 7.5 Fictional Data and Fairness
-
-- Persistent `DemoBadge`: "Demo mode: all scholarships and people are fictional."
-- Footer statement on every page.
-- Pricing page fairness statement: "Paying never changes your matches, eligibility reasons, order of results or scholarship outcomes. Premium adds convenience only."
-- No real institution logos, names or trademarks.
+- Demo badge on every page and the footer statement (Section 4.2).
+- Pricing fairness statement: "Paying never changes your matches, eligibility reasons, order of results or scholarship outcomes. Premium adds convenience only."
+- No real institution names, logos or trademarks.
 
 ---
 
-## 8. Success Metrics (Phase 1)
+## 9. Demo Data
 
-Phase 1 has no analytics, so metrics are measured only through **moderated tester sessions**: 10 to 15 undergraduate testers, each starting from a freshly reset demo, observed by a facilitator using a simple scoring sheet. No usage data is recorded by the app.
+### 9.1 Seed Profile
 
-| # | Metric | Definition | Target | How measured |
-|---|---|---|---|---|
-| M1 | Profile completion rate | % of testers who save a profile with all required fields completed within 5 minutes | 70% or more | Facilitator times the task and checks the saved profile |
-| M2 | Comparison engagement | % of testers who compare at least 2 scholarships; plus mean number compared per session | 50% or more; mean 2.5 or more | Facilitator records scholarships added to compare |
-| M3 | Checklist progression | % of testers who update the status of at least 3 checklist items in one session | 60% or more | Facilitator counts status changes |
-| M4 | Eligibility comprehension | % of testers who correctly explain, in a post-task question, why one named scholarship is a Partial match | 80% or more | Facilitator scoring sheet |
+Chloe Wong (Demo): Year 1, Business, BBA (fictional), GPA 3.10, local, financial need declared, activities community service and leadership, languages English, Cantonese and Putonghua, first-generation status not given.
 
-In-app metrics are deferred to Phase 2 (P2-8).
+Saved at start: sch-001 and sch-002. Documents at start: transcript Ready, activity certificate Ready, personal statement In progress, all others Not started.
 
----
+### 9.2 Documents (9)
 
-## 9. Acceptance Criteria (Phase 1)
-
-### 9.1 Landing `/`
-- Done when the H1, three how-it-works steps and the four trust statements render, including "We never estimate whether you will win an award".
-- Done when "Try the demo" routes to `/profile` on first visit and to `/dashboard` once a profile has been saved.
-- Done when a keyboard-only pass reaches every link and button in order, each with a visible focus ring.
-- Done when, with the seed profile, the match preview shows Kowloon Business Leaders Bursary as Eligible with "3 of 3 criteria met", and "See all matches" opens `/matches`.
-- Done when the live page source contains `og:title`, `og:description` and a meta description.
-
-### 9.2 Profile `/profile`
-- Done when the seeded demo profile loads pre-filled, and saving an edit persists after a browser reload.
-- Done when submitting with GPA outside 0.00 to 4.30 shows an inline error linked by `aria-describedby` and an error summary that receives focus.
-- Done when the PDPO statement is visible above the Save button without opening any dialog.
-- Done when the footer privacy link opens `/privacy`, which shows the same statement at the top of the page.
-
-### 9.3 Matches `/matches`
-- Done when, with the unchanged seed profile, exactly 4 scholarships appear under Eligible, 4 under Partial match and 4 under Not eligible (Section 10.4).
-- Done when every card shows "X of Y criteria met" and expanding reasons lists each criterion with Meets, Does not meet or Check plus a plain-language explanation.
-- Done when changing GPA from 3.10 to 3.70 on the profile moves "Peak Academic Excellence Scholarship" from Not eligible to Eligible without a page reload.
-
-### 9.3a Eligibility wording
-- Done when every reason on `/matches`, `/scholarships/:id` and `/compare` names the criterion (e.g. "Your GPA is 1.50"), and no screen shows a rule id.
-
-### 9.4 Scholarship detail `/scholarships/:id`
-- Done when each seeded `id` renders its criteria, required documents with current checklist status, and deadlines; an unknown `id` renders the not found state.
-- Done when Save toggles the scholarship in saved state and the change is reflected on `/dashboard` and `/checklist`.
-
-### 9.5 Compare `/compare`
-- Done when criterion rows use plain labels (e.g. "GPA", "Year of study") with no internal ids such as "r-009-1", and empty cells read "No requirement".
-- Done when 2 or 3 scholarships can be added from Matches, and adding a fourth is blocked with an announced message.
-- Done when the comparison renders as a `<table>` with a `<caption>` and row and column headers that a screen reader announces correctly.
-- Done when an empty compare state links back to `/matches`.
-
-### 9.6 Checklist `/checklist`
-- Done when a document required by several saved scholarships appears once, with chips naming each scholarship that uses it.
-- Done when changing a status to Ready updates the summary ("X of Y ready") and the relevant dashboard readiness cards immediately and after reload.
-- Done when evidence notes accept up to 280 characters, show a live character count, and persist after reload.
-
-### 9.7 Dashboard `/dashboard`
-- Done when deadlines for saved scholarships are listed in ascending date order, with overdue items in a separate "Passed" group.
-- Done when each saved scholarship shows readiness only as "X of Y documents ready", and the pre-release text search (Section 7.4) finds no prohibited terms.
-- Done when, with no saved scholarships, an empty state links to `/matches`.
-
-### 9.8 Pricing `/pricing`
-- Done when three tiers and the fairness statement render, labelled "Illustrative pricing (demo)".
-- Done when every tier button opens `DemoOnlyDialog`, focus is trapped inside, Escape closes it, and focus returns to the triggering button.
-- Done when the built bundle contains no payment SDK and the page contains no card or payment input.
-
-### 9.9 Global
-- Done when `npm install && npm run build` succeeds with no environment variables and the `dist` output deploys to Vercel with deep links working.
-- Done when the network panel shows no requests to external domains during a full journey.
-- Done when "Reset demo data" restores the seed (including recalculated deadline dates) after confirmation.
-
----
-
-## 10. Demo Data
-
-### 10.1 Seed Student Profile
-
-| Field | Value |
+| id | Name |
 |---|---|
-| `displayName` | Chloe Wong (Demo) |
-| `yearOfStudy` | 1 |
-| `faculty` | Business |
-| `programme` | BBA (fictional) |
-| `gpa` | 3.10 |
-| `residency` | local |
-| `financialNeedDeclared` | true |
-| `activities` | community_service, leadership |
-| `languages` | English, Cantonese, Putonghua |
-| `firstGenerationStudent` | null (Prefer not to say) |
+| doc-transcript | Academic transcript |
+| doc-statement | Personal statement |
+| doc-reference | Reference letter |
+| doc-cv | CV |
+| doc-activity | Activity or volunteering certificate |
+| doc-financial | Financial need declaration form |
+| doc-id | Identity document copy (status only, no number entered) |
+| doc-portfolio | Creative portfolio |
+| doc-language | Language proficiency evidence |
 
-Seeded saved scholarships: `sch-001`, `sch-002`.
-Seeded document progress: `doc-transcript` ready, `doc-activity` ready, `doc-statement` in progress. All other documents not started.
+### 9.3 Scholarships (12, all fictional)
 
-### 10.2 Document Items
+| id | Name | Provider | Type | HK$ | Documents | Deadlines (days from seeding) |
+|---|---|---|---|---|---|---|
+| sch-001 | Victoria Harbour First-Year Achievement Award | Harbourview Education Foundation | Merit | 20,000 | transcript, statement | close +21 |
+| sch-002 | Lion Rock Community Service Scholarship | Lion Rock Civic Trust | Community | 15,000 | activity, reference, statement | reference +23; close +30 |
+| sch-003 | Kowloon Business Leaders Bursary | Kowloon Commerce Association | Leadership | 25,000 | cv, reference, statement | close +12; interview +26 |
+| sch-004 | Pearl River Student Support Grant | Pearl River Benevolent Fund | Need-based | 18,000 | financial, id, transcript | close +45 |
+| sch-005 | Tai Mo Shan Leadership Fellowship | Tai Mo Shan Youth Foundation | Leadership | 30,000 | cv, reference, statement | close +60; interview +75 |
+| sch-006 | Lantau Trilingual Communication Award | Lantau Language Society | Merit | 10,000 | language, transcript | close +25 |
+| sch-007 | Sai Kung First Generation Pathway Scholarship | Sai Kung Futures Foundation | Need-based | 35,000 | financial, statement, reference | close +18 |
+| sch-008 | Tsing Yi Volunteer Impact Award | Tsing Yi Neighbourhood Council | Community | 8,000 | activity, reference | reference -3 (overdue); close +5 |
+| sch-009 | Peak Academic Excellence Scholarship | The Peak Scholars Fund | Merit | 60,000 | transcript, reference, statement, cv | close +40; interview +55 |
+| sch-010 | Shek O Sports Scholarship | Shek O Athletic Association | Sports | 20,000 | activity, reference | close +35 |
+| sch-011 | Cheung Chau Creative Arts Award | Cheung Chau Arts Circle | Arts | 12,000 | portfolio, statement | close +28 |
+| sch-012 | Sha Tin Undergraduate Research Grant | Sha Tin Science Trust | Merit | 40,000 | cv, transcript, reference, statement | close +50; results +90 |
 
-| id | Name | Category |
+Each provider name is suffixed "(fictional)" in the app. Each scholarship has exactly one application close date.
+
+### 9.4 Eligibility Rules (29)
+
+(M) = needs manual evidence, so the outcome is "Check" even when the profile passes.
+
+| Scholarship | Rule | Requirement sentence (rule label) |
 |---|---|---|
-| `doc-transcript` | Academic transcript | academic |
-| `doc-statement` | Personal statement | written |
-| `doc-reference` | Reference letter | reference |
-| `doc-cv` | CV | written |
-| `doc-activity` | Activity or volunteering certificate | activity_evidence |
-| `doc-financial` | Financial need declaration form | financial |
-| `doc-id` | Identity document copy (status tracked only, no number entered) | identity |
-| `doc-portfolio` | Creative portfolio | activity_evidence |
-| `doc-language` | Language proficiency evidence | language |
+| sch-001 | Year in [1] | This scholarship is open to Year 1 students only. |
+| sch-001 | GPA ≥ 3.00 | This scholarship requires a GPA of 3.00 or above. |
+| sch-001 | Residency = local | This scholarship is open to local students. |
+| sch-002 | Activities include community service | This scholarship requires community service. |
+| sch-002 | Year in [1 to 4] | This scholarship is open to Years 1 to 4. |
+| sch-003 | Faculty in [Business] | This scholarship is open to Business students. |
+| sch-003 | Activities include leadership | This scholarship requires leadership experience. |
+| sch-003 | GPA ≥ 2.80 | This scholarship requires a GPA of 2.80 or above. |
+| sch-004 | Financial need = yes | This scholarship requires a declaration of financial need. |
+| sch-004 | Residency = local | This scholarship is open to local students. |
+| sch-005 | Activities include leadership | This scholarship requires leadership experience. |
+| sch-005 | Year in [1, 2] | This scholarship is open to Years 1 and 2. |
+| sch-005 | Leadership held 1 year or more (M) | This scholarship requires a leadership role held for at least one year. The provider will ask for evidence of this. |
+| sch-006 | Languages include all of English, Cantonese, Putonghua (M) | This scholarship requires English, Cantonese and Putonghua. The provider will ask for evidence of this. |
+| sch-006 | GPA ≥ 3.00 | This scholarship requires a GPA of 3.00 or above. |
+| sch-007 | First-generation = yes | This scholarship is for first-generation university students. |
+| sch-007 | Financial need = yes | This scholarship requires a declaration of financial need. |
+| sch-007 | Residency = local | This scholarship is open to local students. |
+| sch-008 | Activities include community service | This scholarship requires community service. |
+| sch-008 | 50+ verified volunteer hours (M) | This scholarship requires at least 50 verified volunteer hours. The provider will ask for evidence of this. |
+| sch-009 | GPA ≥ 3.60 | This scholarship requires a GPA of 3.60 or above. |
+| sch-009 | Year in [1 to 4] | This scholarship is open to Years 1 to 4. |
+| sch-010 | Activities include sports | This scholarship requires sports involvement. |
+| sch-010 | Year in [1 to 4] | This scholarship is open to Years 1 to 4. |
+| sch-011 | Activities include arts | This scholarship requires arts involvement. |
+| sch-011 | Faculty in [Arts, Education] | This scholarship is open to Arts and Education students. |
+| sch-012 | Year in [3, 4] | This scholarship is open to Years 3 and 4. |
+| sch-012 | Faculty in [Science, Engineering] | This scholarship is open to Science and Engineering students. |
+| sch-012 | Activities include research | This scholarship requires research experience. |
 
-### 10.3 Scholarships and Eligibility Rules
+Rules marked (M) for sch-005 and sch-008 are implemented as "activities include leadership" and "activities include community service" respectively, with the manual flag set.
 
-All names and providers are fictional. Rules marked (M) have `requiresManualCheck: true`.
-
-| id | Name | Provider | Type | Amount (HK$) | Rules | Documents | Deadlines (offset days) |
-|---|---|---|---|---|---|---|---|
-| `sch-001` | Victoria Harbour First-Year Achievement Award | Harbourview Education Foundation (fictional) | merit | 20,000 | yearOfStudy in [1]; gpa gte 3.00; residency equals local | transcript, statement | close +21 |
-| `sch-002` | Lion Rock Community Service Scholarship | Lion Rock Civic Trust (fictional) | community | 15,000 | activities includesAny [community_service]; yearOfStudy in [1,2,3,4] | activity, reference, statement | reference due +23; close +30 |
-| `sch-003` | Kowloon Business Leaders Bursary | Kowloon Commerce Association (fictional) | leadership | 25,000 | faculty in [Business]; activities includesAny [leadership]; gpa gte 2.80 | cv, reference, statement | close +12; interview +26 |
-| `sch-004` | Pearl River Student Support Grant | Pearl River Benevolent Fund (fictional) | need_based | 18,000 | financialNeedDeclared equals true; residency equals local | financial, id, transcript | close +45 |
-| `sch-005` | Tai Mo Shan Leadership Fellowship | Tai Mo Shan Youth Foundation (fictional) | leadership | 30,000 | activities includesAny [leadership]; yearOfStudy in [1,2]; leadership role held 1 year or more: activities includesAny [leadership] (M) | cv, reference, statement | close +60; interview +75 |
-| `sch-006` | Lantau Trilingual Communication Award | Lantau Language Society (fictional) | merit | 10,000 | languages includesAll [English, Cantonese, Putonghua] (M); gpa gte 3.00 | language, transcript | close +25 |
-| `sch-007` | Sai Kung First Generation Pathway Scholarship | Sai Kung Futures Foundation (fictional) | need_based | 35,000 | firstGenerationStudent equals true; financialNeedDeclared equals true; residency equals local | financial, statement, reference | close +18 |
-| `sch-008` | Tsing Yi Volunteer Impact Award | Tsing Yi Neighbourhood Council (fictional) | community | 8,000 | activities includesAny [community_service]; 50 or more verified volunteer hours: activities includesAny [community_service] (M) | activity, reference | reference due -3; close +5 |
-| `sch-009` | Peak Academic Excellence Scholarship | The Peak Scholars Fund (fictional) | merit | 60,000 | gpa gte 3.60; yearOfStudy in [1,2,3,4] | transcript, reference, statement, cv | close +40; interview +55 |
-| `sch-010` | Shek O Sports Scholarship | Shek O Athletic Association (fictional) | sports | 20,000 | activities includesAny [sports]; yearOfStudy in [1,2,3,4] | activity, reference | close +35 |
-| `sch-011` | Cheung Chau Creative Arts Award | Cheung Chau Arts Circle (fictional) | arts | 12,000 | activities includesAny [arts]; faculty in [Arts, Education] | portfolio, statement | close +28 |
-| `sch-012` | Sha Tin Undergraduate Research Grant | Sha Tin Science Trust (fictional) | merit | 40,000 | yearOfStudy in [3,4]; faculty in [Science, Engineering]; activities includesAny [research] | cv, transcript, reference, statement | close +50; result release +90 |
-
-Every scholarship has exactly one `application_close` deadline. `sch-008` includes one overdue deadline to exercise the "Passed" group.
-
-### 10.4 Expected Results for the Seed Profile
+### 9.5 Expected Results for the Seed Profile
 
 | Group | Scholarships | Why |
 |---|---|---|
-| **Eligible (4)** | sch-001, sch-002, sch-003, sch-004 | Every rule met |
-| **Partial match (4)** | sch-005, sch-006, sch-007, sch-008 | No rule failed; sch-005, sch-006, sch-008 have a manual-check rule; sch-007 depends on `firstGenerationStudent`, which is null |
-| **Not eligible (4)** | sch-009 (1 of 2 met), sch-010 (1 of 2 met), sch-011 (0 of 2 met), sch-012 (0 of 3 met) | At least one rule not met |
+| Eligible (4) | sch-001 to sch-004 | Every rule met |
+| Partial match (4) | sch-005 to sch-008 | Nothing failed; sch-005, sch-006 and sch-008 have a manual rule; sch-007 needs first-generation status, which is not given |
+| Not eligible (4) | sch-009 (1 of 2), sch-010 (1 of 2), sch-011 (0 of 2), sch-012 (0 of 3) | At least one rule not met |
 
-Check this distribution manually on `/matches` after any seed edit. An automated assertion is Phase 2 (P2-7).
-
----
-
-## 11. Key Decisions and Trade-offs
-
-**Why the scope was cut.** Phase 1 exists to validate one question: does a transparent eligibility view plus a combined checklist help first-time applicants act? Login, payments, uploads and reminders add cost, security risk and legal obligations without testing that question. Each deferred feature is listed in Phase 2 so nothing is lost, and the repository layer keeps the upgrade path open.
-
-**Why the stack is front-end only.** A static React app with seeded data deploys to Vercel in minutes, needs no secrets, has no server to secure and holds no real personal data. That keeps the demo safe to share and cheap to iterate. The trade-off is that data lives in one browser, success can only be measured through tester sessions, and there is no multi-user view, all of which are acceptable for validation.
-
-**Why matching is rule-based.** Scholarship eligibility is defined by published criteria, so the honest model is to check those criteria and show the result. Rule-based logic is explainable, testable and auditable, and lets students see exactly what to fix or confirm. AI prediction would be opaque, could encode bias, would be hard to justify to universities as paying customers, and would add no value where the rules are already known.
-
-**Why readiness excludes win probability.** ScholarReady cannot know the applicant pool, panel judgement or funding limits, so any chance-of-winning figure would be invented. A false score could discourage eligible students or create false confidence. Document completeness is something the student controls and can act on, which keeps the product honest and keeps paying customers out of any perception that outcomes can be bought.
-
+Check this 4 / 4 / 4 split on `/matches` after any seed change.
 
 ---
 
-## 12. Non-Functional Requirements
+## 10. Key Decisions and Trade-offs
 
-| Area | Target |
-|---|---|
-| Performance | Pages load and respond without noticeable delay on a standard laptop; no heavy libraries beyond the stated stack |
-| Accessibility | Manual checks on every page: keyboard-only pass, visible focus rings, contrast verified against Section 7.1 palette |
-| Responsive | Desktop-first; fully responsive down to 1024px and usable at 768px |
-| Browser support | Latest two versions of Chrome, Edge, Safari, Firefox |
-| Locale | UK English spelling; dates `en-GB` (14 Nov 2026); currency `HK$` with thousands separators |
-| Reliability | App usable when `localStorage` is unavailable (in-memory fallback) |
-| Code quality | TypeScript strict, ESLint clean; automated tests and Lighthouse targets deferred to Phase 2 (P2-7) |
+- **Scope cut to one core loop.** Login, payments, uploads and reminders add cost, security risk and legal duties without testing the core question (Section 2). They are kept in Phase 2, and the repository layer keeps the upgrade path open. A demo sign-in page shows where accounts will sit without collecting any credentials.
+- **Front end only.** A static app with seeded data deploys quickly, needs no secrets, has no server to secure and holds no real personal data. Trade-offs: data lives in one browser, metrics come from tester sessions only, and there is no multi-user view. All are acceptable for validation.
+- **Rule-based matching.** Eligibility is defined by published criteria, so checking those criteria is the honest model. It is explainable and testable, and shows students what to fix or confirm. AI prediction would be opaque, could encode bias and adds nothing where the rules are known.
+- **Readiness excludes win probability.** The app cannot know the applicant pool, panel judgement or funding limits, so any odds would be invented and could mislead. Document completeness is something students control and can act on.
+
+---
+
+## 11. Open Questions
+
+1. **Phones.** The product is desktop-first and usable at 768px; behaviour below 768px is not specified, although testers may use phones. Decide whether Phase 2 needs a mobile target.
+2. **Success metrics.** The M1 to M4 targets are assumptions; no tester session results are recorded yet.
+3. **Repository copy.** `PRD.md` and `tasklist.md` on GitHub are still v1.3. Replace them with this version so the repository matches the submission.
 
 
 ---
