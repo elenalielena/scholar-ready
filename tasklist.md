@@ -1,19 +1,17 @@
-=====
-
 # tasklist.md: ScholarReady Execution Plan
 
 | Item | Detail |
 |---|---|
 | Source | PRD.md v1.5 |
 | Executor | Manus AI |
-| Tasks | 37 in 7 modules (Tasks 1 to 35 consolidated from the original 57, original numbers in brackets; Tasks 36 and 37 added in v1.5) |
-| Status | Tasks 1 to 35 complete |
+| Tasks | 38 in 7 modules; numbers in brackets refer to the original 57-task version |
+| Status | All 38 tasks complete |
 
 ## Rules for the Agent
 
 1. Work in task order and start a task only when its dependencies are done and their checks pass.
 2. Build only what the task describes; if a check fails, fix it within the same task.
-3. Never add a database, authentication, `.env` files, environment variables, payment code, uploads, email capture, analytics or external requests.
+3. Respect the constraints in PRD 6.2: no database, real authentication, environment variables, payment code, uploads, data-collecting fields or external requests.
 4. Use fictional data, UK English, `en-GB` dates (14 Nov 2026) and HK$ with thousands separators.
 5. Never use the banned words in PRD Section 8.3 in user-facing text.
 6. All checks are manual in Phase 1. "Reset" means select "Reset demo data" after the check so the next task starts from the seed.
@@ -84,7 +82,7 @@
   **Depends on:** 2.
 
 - [x] **12. Header and navigation** [21]
-  Links, active state and the below-1024px Menu button (PRD 4.2).
+  Links, active state and the below-1024px Menu button (PRD 4.2). The Sign in link was added in Task 36.
   **Done when:** the current page link is underlined; below 1024px the Menu opens and closes by keyboard only.
   **Depends on:** 11.
 
@@ -95,19 +93,19 @@
 
 - [x] **14. Display components** [28 to 31]
   Match badge (icon plus text), deadline chip (date plus relative days), readiness meter ("X of Y ready", no percentage), empty state.
-  **Done when:** the build passes; each is checked on screen in Tasks 17, 19, 23 and 25.
+  **Done when:** the build passes; each is checked on screen in Tasks 17, 19, 22, 23 and 25.
   **Depends on:** 1.
 
 ## Module 5: Pages
 
 - [x] **15. Landing page** [32]
   H1, three steps, trust statements, "Try the demo" routing (PRD 4.3).
-  **Done when:** all trust statements render, including "We never estimate whether you will win an award"; after a reset the button opens `/profile`, after saving a profile it opens `/dashboard`; a keyboard pass shows a focus ring on every control.
+  **Done when:** PRD 4.3 Landing checks for the H1, steps, trust statements and "Try the demo" routing pass.
   **Depends on:** 8, 12.
 
 - [x] **16. Profile page and privacy notice** [33, 34]
   Notice component with the six paragraphs from PRD 8.2 word for word (`id="pdpo"`); grouped form with labels, helper text, validation and live announcement.
-  **Done when:** the form loads Chloe's data; GPA 3.20 saved persists after reload; GPA 5.00 shows an inline error and a focused error summary; the notice is visible above Save and `/profile#pdpo` jumps to it. Reset.
+  **Done when:** PRD 4.3 Profile checks pass, plus: GPA 3.20 persists after reload and `/profile#pdpo` jumps to the notice. Reset.
   **Depends on:** 8, 13.
 
 - [x] **17. Scholarship card and reasons** [35, 36]
@@ -122,32 +120,32 @@
 
 - [x] **19. Matches page and compare tray** [38]
   Three groups, "How matching works" note, tray holding up to 3.
-  **Done when:** groups match PRD 9.5; Eligible is ordered Kowloon, Victoria Harbour, Lion Rock, Pearl River by default; Tai Mo Shan shows a "Check" reason about the leadership role; GPA 3.70 moves Peak Academic Excellence to Eligible. Reset.
+  **Done when:** PRD 4.3 Matches checks pass, plus: Eligible is ordered Kowloon, Victoria Harbour, Lion Rock, Pearl River by default, and Tai Mo Shan shows a "Check" reason about the leadership role. Reset.
   **Depends on:** 17, 18.
 
 - [x] **20. Scholarship detail page** [39]
   Per PRD 4.3.
-  **Done when:** `/scholarships/sch-001` shows criteria, two documents (transcript Ready) and the close date; `/scholarships/sch-999` shows the not found state; saving sch-003 here adds it to Dashboard and Checklist. Reset.
+  **Done when:** PRD 4.3 detail checks pass, using `/scholarships/sch-001` (criteria, two documents with transcript Ready, close date), `/scholarships/sch-999` (not found) and saving sch-003. Reset.
   **Depends on:** 17.
 
 - [x] **21. Compare page** [40]
   Accessible comparison table per PRD 4.3 (criterion rows revised in Task 34).
-  **Done when:** 3 scholarships show side by side; a fourth is refused with a message; removing all shows the empty state linking to `/matches`.
+  **Done when:** PRD 4.3 Compare checks pass with 3 scholarships side by side.
   **Depends on:** 19.
 
 - [x] **22. Checklist page** [41, 42]
   Document rows with status, evidence note and chips; summary with readiness meter; filters.
-  **Done when:** the seed shows 4 rows and "2 of 4 ready", with Personal statement once for Victoria Harbour and Lion Rock; marking it Ready shows "3 of 4 ready" immediately and after reload; a note stops at 280 characters and persists. Reset.
+  **Done when:** PRD 4.3 Checklist checks pass. Reset.
   **Depends on:** 10, 14.
 
 - [x] **23. Dashboard page** [43, 44]
   Deadline list, readiness cards, saved scholarships, up to 3 next actions, empty state.
-  **Done when:** deadlines run Victoria Harbour close, Lion Rock reference, Lion Rock close; saving Tsing Yi shows its reference under "Passed 3 days ago" and close as "Due in 5 days"; Victoria Harbour shows "1 of 2 documents ready" and Lion Rock "1 of 3", with no percentages; unsaving both shows the empty state. Reset.
+  **Done when:** PRD 4.3 Dashboard checks pass, plus: deadlines run Victoria Harbour close, Lion Rock reference, Lion Rock close; saving Tsing Yi shows its reference as "Passed 3 days ago" and its close as "Due in 5 days". Reset.
   **Depends on:** 7, 10, 14.
 
 - [x] **24. Pricing page** [45]
-  Three tiers, demo label, fairness statement, demo-only dialog (PRD 4.3).
-  **Done when:** each button opens the dialog with the exact message, focus is trapped, Escape closes it and focus returns; no card or payment field exists.
+  Per PRD 4.3.
+  **Done when:** PRD 4.3 Pricing checks pass.
   **Depends on:** 13.
 
 - [x] **25. Not found page** [46]
@@ -179,7 +177,7 @@
 
 - [x] **30. Landing match preview** [52]
   Read-only "Example match (demo data)" card per PRD 4.3, using the existing engine.
-  **Done when:** after a reset it shows Kowloon Business Leaders Bursary, HK$25,000, Eligible, "3 of 3 criteria met"; "See all matches" opens `/matches` and is reachable by Tab.
+  **Done when:** PRD 4.3 Landing card check passes (Kowloon, HK$25,000, Eligible, "3 of 3 criteria met"); "See all matches" is reachable by Tab.
   **Depends on:** 9, 15.
 
 - [x] **31. Social sharing tags** [53]
@@ -189,17 +187,17 @@
 
 - [x] **32. Privacy page** [54]
   `/privacy` with H1 "Privacy statement", the notice and a link back to Profile; footer link changed from `/profile#pdpo` to `/privacy`; notice stays on Profile.
-  **Done when:** the footer link opens `/privacy`; a direct refresh does not 404; Profile still shows the notice above Save.
+  **Done when:** PRD 4.3 Privacy checks pass and Profile still shows the notice above Save.
   **Depends on:** 11, 16.
 
 - [x] **33. Plain-language reasons** [55]
   Build every reason from the student sentence and the rule label (PRD 5.3, 9.4) on every screen.
-  **Done when:** after a reset, `/scholarships/sch-002` reads "Your activities include community service and leadership. This scholarship requires community service." and "You are in Year 1. This scholarship is open to Years 1 to 4."; with GPA 1.50, Peak Academic Excellence reads "Your GPA is 1.50. This scholarship requires 3.60 or above."; no screen shows "Your value is", "r-0" or underscores in reasons. Reset.
+  **Done when:** after a reset, `/scholarships/sch-002` reads "Your activities include community service and leadership. This scholarship requires community service." and "You are in Year 1. This scholarship is open to Years 1 to 4."; with GPA 1.50, Peak Academic Excellence reads "Your GPA is 1.50. This scholarship requires 3.60 or above."; no screen shows the banned forms in PRD 5.3. Reset.
   **Depends on:** 5, 9.
 
 - [x] **34. Compare criterion rows** [56]
   One row per criterion type with plain labels, requirement and result, or "No requirement" (PRD 4.3).
-  **Done when:** comparing Peak Academic Excellence, Shek O and Lion Rock shows GPA, Year of study and Activities rows, with no "Not applicable" or rule ids, and the table keeps its caption and headers.
+  **Done when:** PRD 4.3 Compare criterion checks pass when comparing Peak Academic Excellence, Shek O and Lion Rock (rows GPA, Year of study, Activities).
   **Depends on:** 21, 33.
 
 - [x] **35. Redeploy and verify live** [57]
@@ -210,13 +208,19 @@
 
 - [x] **36. Demo sign-in page** (`src/pages/SignInPage.tsx`, `src/routes.tsx`, `src/components/layout/Header.tsx`)
   Add `/sign-in` per PRD 4.3 and a "Sign in" link in the header (also in the below-1024px Menu). No input fields, no real authentication, no stored credentials.
-  **Done when:** the header link opens `/sign-in` and is reachable by Tab with a visible focus ring; "Continue with the demo account" opens `/profile` after a reset and `/dashboard` after saving a profile; the page has no form fields; a direct refresh does not 404; `npm run build` and `npm run lint` pass. Reset.
+  **Done when:** PRD 4.3 Sign in checks pass; the link is reachable by Tab with a visible focus ring; `npm run build` and `npm run lint` pass. Reset.
   **Depends on:** 12, 15.
 
 - [x] **37. Redeploy and verify live**
   Push to GitHub so Vercel redeploys.
   **Done when:** on https://scholar-ready.vercel.app the Task 36 checks pass, and the landing match preview, `/privacy` and the 4 / 4 / 4 split after a reset still work.
   **Depends on:** 36.
+
+- [x] **38. Target size and reduced-motion audit** (`src/styles/index.css`)
+  Audit every page for links and buttons smaller than 24 by 24 CSS px, and confirm the reduced-motion rule (PRD 8.1). Fix only failures.
+  **Done when:** after adding a global 24 by 24 px minimum for links and buttons, a rebuilt audit of all 11 pages finds no visible control below 24 by 24 px; with `prefers-reduced-motion: reduce` emulated, transitions and animations run at 0.01ms with one iteration and scrolling is not smooth; `npm run build` and `npm run lint` pass.
+  **Note:** the first audit failed (footer, Dashboard and Checklist text links were about 20px high); fixed in commit a3840b6.
+  **Depends on:** 26, 36.
 
 ---
 
