@@ -2,7 +2,7 @@
 
 | Item | Detail |
 |---|---|
-| Version | 1.5 (adds a demo sign-in page; otherwise as v1.4) |
+| Version | 1.5 |
 | Status | Phase 1 built and deployed |
 | Platform | Desktop-first web app; fully responsive down to 1024px, usable at 768px |
 | Data | Fictional seed data only, stored in the user's browser |
