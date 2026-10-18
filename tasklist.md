@@ -213,7 +213,7 @@
   **Done when:** the header link opens `/sign-in` and is reachable by Tab with a visible focus ring; "Continue with the demo account" opens `/profile` after a reset and `/dashboard` after saving a profile; the page has no form fields; a direct refresh does not 404; `npm run build` and `npm run lint` pass. Reset.
   **Depends on:** 12, 15.
 
-- [ ] **37. Redeploy and verify live**
+- [x] **37. Redeploy and verify live**
   Push to GitHub so Vercel redeploys.
   **Done when:** on https://scholar-ready.vercel.app the Task 36 checks pass, and the landing match preview, `/privacy` and the 4 / 4 / 4 split after a reset still work.
   **Depends on:** 36.
