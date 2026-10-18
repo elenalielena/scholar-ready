@@ -36,7 +36,7 @@ ScholarReady never predicts or implies a chance of winning. "Readiness" means do
 | Seasonal Premium | HK$38 per scholarship season | Convenience only: unlimited saved scholarships, deadline reminders | Display only |
 | Institutional Licence | Quoted per institution | Adviser and institution accounts, cohort readiness view, custom listings | Display only |
 
-**Fairness rule (non-negotiable):** paying never changes matches, eligibility reasons, ordering, scholarship visibility or outcomes. This statement appears on the pricing page.
+**Fairness rule (non-negotiable):** paying never changes matches, eligibility reasons, ordering, scholarship visibility or outcomes. The pricing page states this (wording in Section 4.3).
 
 ---
 
@@ -52,6 +52,10 @@ Metrics are gathered in moderated sessions with 10 to 15 undergraduate testers, 
 | M2 | Testers who compare at least 2 scholarships; mean number compared | 50% or more; mean 2.5 or more | Facilitator records compare use |
 | M3 | Testers who update at least 3 checklist statuses in one session | 60% or more | Facilitator counts changes |
 | M4 | Testers who correctly explain why a named scholarship is a Partial match | 80% or more | Post-task question, scoring sheet |
+
+A **complete profile** (M1) has year of study, faculty, residency, financial need and at least one activity saved; GPA and first-generation status are optional.
+
+**Validation status:** these targets will be measured in moderated tester sessions after launch; no sessions have been run yet.
 
 ---
 
@@ -74,20 +78,21 @@ Metrics are gathered in moderated sessions with 10 to 15 undergraduate testers, 
 | `*` | Not found | Friendly 404 |
 | All pages | Demo controls | Demo badge and "Reset demo data" |
 
-Phase 1 must not include real login or sign-up, email or password fields, payment or card inputs, file uploads, email capture, analytics or third-party scripts, or anything that appears to collect real personal data.
+Phase 1 collects no real personal data, credentials or payments; the full list of exclusions is in Section 6.2.
 
 ### 3.2 Phase 2: Future Enhancements (not built)
 
-| # | Feature | Depends on |
+| # | Feature | Needs |
 |---|---|---|
-| P2-1 | Real login, sign-up, password reset | Auth provider, database |
-| P2-2 | Adviser and institution accounts, cohort view | Roles, database, data agreements |
-| P2-3 | Real payments and invoicing | Payment provider, webhooks, server |
-| P2-4 | Document uploads | Object storage, malware scanning, retention policy |
-| P2-5 | Email deadline reminders | Email service, scheduled jobs, consent |
+| P2-1 | Real login, sign-up, password reset | Managed auth (e.g. Supabase Auth, Auth0, Clerk) with email verification and rate limiting; Postgres with row-level security |
+| P2-2 | Adviser and institution accounts, cohort view | Student, adviser and admin roles; data processing agreement; adviser access limited to readiness and deadlines |
+| P2-3 | Real payments and invoicing | Stripe or another HK-supported provider; webhook endpoint; server |
+| P2-4 | Document uploads | Object storage with signed URLs, size and type limits, malware scan, retention schedule |
+| P2-5 | Email deadline reminders | Transactional email, scheduled jobs, opt-in and unsubscribe |
 | P2-6 | Settings (account, notifications, data export and deletion) | Auth, database |
 | P2-7 | Automated tests and Lighthouse targets | Test tooling, CI pipeline |
-| P2-8 | In-app usage metrics | Metrics design, privacy notice update |
+| P2-8 | In-app usage metrics | Privacy-respecting analytics, consent banner, updated privacy notice |
+| P2-9 | Mobile layout below 768px (phones) | Responsive redesign and mobile testing |
 
 All data access goes through a repository layer (Section 6.3) so browser storage can later be replaced by an API without rewriting pages.
 
@@ -154,11 +159,15 @@ All data access goes through a repository layer (Section 6.3) so browser storage
 **Dashboard `/dashboard`**
 - Deadlines for saved scholarships in date order, overdue items in a separate "Passed" group, labels such as "Due in 5 days", "Due today", "Passed 3 days ago".
 - One readiness card per saved scholarship: "X of Y documents ready". No percentages or gauges.
-- Up to 3 rule-based next actions, e.g. "Start personal statement, needed for 2 scholarships due within 14 days".
-- **Done when:** the seed shows Victoria Harbour "1 of 2 documents ready" and Lion Rock "1 of 3 documents ready"; with no saved scholarships, an empty state links to `/matches`.
+- Up to 3 next actions, built by these rules:
+  1. Only saved scholarships count, taken in seed order (sch-001 first).
+  2. For each, the first required document (in that scholarship's document order) that is not Ready produces one action; a document with no status counts as not Ready.
+  3. Each action reads "Prepare {document name}" with the detail "Needed for {scholarship name}." and links to `/checklist`.
+  4. Stop at 3 actions. If every required document is Ready, show "You are up to date on the current saved scholarships."
+- **Done when:** the seed shows Victoria Harbour "1 of 2 documents ready" and Lion Rock "1 of 3 documents ready", and two next actions: "Prepare Personal statement" (Victoria Harbour) and "Prepare Reference letter" (Lion Rock); with no saved scholarships, an empty state links to `/matches`.
 
 **Pricing `/pricing`**
-- Three tiers (Section 1.4) labelled "Illustrative pricing (demo)", with the fairness statement beneath.
+- Three tiers (Section 1.4) labelled "Illustrative pricing (demo)", with this statement beneath: "Paying never changes your matches, eligibility reasons, order of results or scholarship outcomes. Premium adds convenience only."
 - Every tier button opens a dialog: "Payments are not available in this demo. No charge has been made."
 - **Done when:** the dialog traps focus, Escape closes it and focus returns to the button; the page and bundle contain no payment SDK or card input.
 
@@ -230,10 +239,11 @@ Vite, React 18+, TypeScript (`strict`), Tailwind CSS, React Router v6+ (`createB
 
 ### 6.2 Constraints
 
-- Front end only: no server, API routes, database or authentication. One demo user loaded from seed.
+- Front end only: no server, API routes, database or real authentication. One demo user loaded from seed.
+- No email, password, payment, card or file-upload fields anywhere (the demo sign-in page has no inputs).
 - No secret keys, `.env` files or environment variables.
-- No third-party scripts, trackers, external fonts or analytics.
-- All names, providers and people fictional; no real trademarks.
+- No external requests: no third-party scripts, trackers, external fonts, analytics, error tracking, email or SMS.
+- All names, providers and people fictional; no real institution names, logos or trademarks.
 
 ### 6.3 Persistence
 
@@ -270,27 +280,12 @@ Full type definitions are in `src/types/models.ts`.
 | Browsers | Latest two versions of Chrome, Edge, Safari, Firefox |
 | Locale | UK English; dates like 14 Nov 2026; currency HK$ with thousands separators |
 | Reliability | Usable when storage is unavailable (in-memory fallback) |
-| Code quality | TypeScript strict and ESLint clean |
 
 ---
 
 ## 7. Third-Party APIs and Payments
 
-**Phase 1:** none. No external requests, payment SDKs, card fields, email, SMS, uploads, analytics or error tracking. The evidence tracker stores a status and a text note only.
-
-**Phase 2 would need:**
-
-| Need | Service type | Notes |
-|---|---|---|
-| Authentication | Managed auth (e.g. Supabase Auth, Auth0, Clerk) | Email verification, rate limiting, student, adviser and admin roles |
-| Database | Managed Postgres | Row-level security per student and institution |
-| Payments | Stripe or another HK-supported provider | One-off seasonal purchase; invoices for licences; webhook endpoint |
-| Uploads | Object storage with signed URLs | Size and type limits, malware scan, retention schedule |
-| Reminders | Transactional email plus scheduled jobs | Opt-in and unsubscribe |
-| Analytics | Privacy-respecting analytics | Consent banner and updated privacy notice |
-| Institutional data | Data processing agreement | Adviser access limited to readiness and deadlines |
-
-Phase 2 introduces a server, environment variables and secrets; none may be added in Phase 1.
+**Phase 1:** none (Section 6.2). Pricing is display-only and the evidence tracker stores a status and a text note only. **Phase 2:** the services in Section 3.2, which bring a server, environment variables and secrets; none may be added in Phase 1.
 
 ---
 
@@ -300,7 +295,7 @@ Phase 2 introduces a server, environment variables and secrets; none may be adde
 
 - Contrast at least 4.5:1 for body text and 3:1 for large text, UI boundaries and focus rings.
 - Visible focus ring on every interactive element; the sticky header never covers the focused element.
-- Targets at least 24 by 24 px; everything usable by keyboard with no traps outside dialogs.
+- Every link and button at least 24 by 24 CSS px (global minimum); everything usable by keyboard with no traps outside dialogs.
 - One H1 per page; header, nav, main and footer landmarks; `<html lang="en-GB">`.
 - Visible form labels, hints and errors linked with `aria-describedby`, error summary on submit.
 - Status and match groups use icon plus text, never colour alone.
@@ -330,16 +325,9 @@ Shown on `/profile` above Save (`id="pdpo"`) and on `/privacy`:
 - No cookie banner is needed: the app sets no cookies and uses browser storage only to run the demo.
 - "Reset demo data" deletes all stored information, meeting the right-to-erasure principle (GDPR Article 17).
 
-### 8.3 Transparency and Wording
+### 8.3 Banned Wording
 
-- Matching uses only the visible rules; every criterion is shown with its result and reason; sorting uses only deadline, amount or name.
 - Banned in any user-facing text, including negated statements: "chance", "likelihood", "probability", "odds", "win rate", "success score", "strong candidate", or any percentage presented as an outcome. Before release, a text search of `src/` for these terms must return nothing.
-
-### 8.4 Fictional Data and Fairness
-
-- Demo badge on every page and the footer statement (Section 4.2).
-- Pricing fairness statement: "Paying never changes your matches, eligibility reasons, order of results or scholarship outcomes. Premium adds convenience only."
-- No real institution names, logos or trademarks.
 
 ---
 
@@ -365,62 +353,43 @@ Saved at start: sch-001 and sch-002. Documents at start: transcript Ready, activ
 | doc-portfolio | Creative portfolio |
 | doc-language | Language proficiency evidence |
 
-### 9.3 Scholarships (12, all fictional)
+### 9.3 Scholarships and Rules (12 scholarships, 29 rules, all fictional)
 
-| id | Name | Provider | Type | HK$ | Documents | Deadlines (days from seeding) |
-|---|---|---|---|---|---|---|
-| sch-001 | Victoria Harbour First-Year Achievement Award | Harbourview Education Foundation | Merit | 20,000 | transcript, statement | close +21 |
-| sch-002 | Lion Rock Community Service Scholarship | Lion Rock Civic Trust | Community | 15,000 | activity, reference, statement | reference +23; close +30 |
-| sch-003 | Kowloon Business Leaders Bursary | Kowloon Commerce Association | Leadership | 25,000 | cv, reference, statement | close +12; interview +26 |
-| sch-004 | Pearl River Student Support Grant | Pearl River Benevolent Fund | Need-based | 18,000 | financial, id, transcript | close +45 |
-| sch-005 | Tai Mo Shan Leadership Fellowship | Tai Mo Shan Youth Foundation | Leadership | 30,000 | cv, reference, statement | close +60; interview +75 |
-| sch-006 | Lantau Trilingual Communication Award | Lantau Language Society | Merit | 10,000 | language, transcript | close +25 |
-| sch-007 | Sai Kung First Generation Pathway Scholarship | Sai Kung Futures Foundation | Need-based | 35,000 | financial, statement, reference | close +18 |
-| sch-008 | Tsing Yi Volunteer Impact Award | Tsing Yi Neighbourhood Council | Community | 8,000 | activity, reference | reference -3 (overdue); close +5 |
-| sch-009 | Peak Academic Excellence Scholarship | The Peak Scholars Fund | Merit | 60,000 | transcript, reference, statement, cv | close +40; interview +55 |
-| sch-010 | Shek O Sports Scholarship | Shek O Athletic Association | Sports | 20,000 | activity, reference | close +35 |
-| sch-011 | Cheung Chau Creative Arts Award | Cheung Chau Arts Circle | Arts | 12,000 | portfolio, statement | close +28 |
-| sch-012 | Sha Tin Undergraduate Research Grant | Sha Tin Science Trust | Merit | 40,000 | cv, transcript, reference, statement | close +50; results +90 |
+(M) = needs manual evidence, so the outcome is "Check" even when the profile passes. Each provider is suffixed "(fictional)" in the app, and each scholarship has exactly one application close date.
 
-Each provider name is suffixed "(fictional)" in the app. Each scholarship has exactly one application close date.
+| id | Name / provider | Type, HK$ | Rules | Documents | Deadlines (days from seeding) |
+|---|---|---|---|---|---|
+| sch-001 | Victoria Harbour First-Year Achievement Award / Harbourview Education Foundation | Merit, 20,000 | Year 1 only; GPA ≥ 3.00; local | transcript, statement | close +21 |
+| sch-002 | Lion Rock Community Service Scholarship / Lion Rock Civic Trust | Community, 15,000 | community service; Years 1 to 4 | activity, reference, statement | reference +23; close +30 |
+| sch-003 | Kowloon Business Leaders Bursary / Kowloon Commerce Association | Leadership, 25,000 | Business; leadership; GPA ≥ 2.80 | cv, reference, statement | close +12; interview +26 |
+| sch-004 | Pearl River Student Support Grant / Pearl River Benevolent Fund | Need-based, 18,000 | financial need; local | financial, id, transcript | close +45 |
+| sch-005 | Tai Mo Shan Leadership Fellowship / Tai Mo Shan Youth Foundation | Leadership, 30,000 | leadership; Years 1 and 2; leadership held 1 year or more (M) | cv, reference, statement | close +60; interview +75 |
+| sch-006 | Lantau Trilingual Communication Award / Lantau Language Society | Merit, 10,000 | English, Cantonese and Putonghua (M); GPA ≥ 3.00 | language, transcript | close +25 |
+| sch-007 | Sai Kung First Generation Pathway Scholarship / Sai Kung Futures Foundation | Need-based, 35,000 | first-generation; financial need; local | financial, statement, reference | close +18 |
+| sch-008 | Tsing Yi Volunteer Impact Award / Tsing Yi Neighbourhood Council | Community, 8,000 | community service; 50+ verified volunteer hours (M) | activity, reference | reference -3 (overdue); close +5 |
+| sch-009 | Peak Academic Excellence Scholarship / The Peak Scholars Fund | Merit, 60,000 | GPA ≥ 3.60; Years 1 to 4 | transcript, reference, statement, cv | close +40; interview +55 |
+| sch-010 | Shek O Sports Scholarship / Shek O Athletic Association | Sports, 20,000 | sports; Years 1 to 4 | activity, reference | close +35 |
+| sch-011 | Cheung Chau Creative Arts Award / Cheung Chau Arts Circle | Arts, 12,000 | arts; Arts or Education | portfolio, statement | close +28 |
+| sch-012 | Sha Tin Undergraduate Research Grant / Sha Tin Science Trust | Merit, 40,000 | Years 3 and 4; Science or Engineering; research | cv, transcript, reference, statement | close +50; results +90 |
 
-### 9.4 Eligibility Rules (29)
+The two (M) rules for sch-005 and sch-008 are implemented as "activities include leadership" and "activities include community service" with the manual flag set.
 
-(M) = needs manual evidence, so the outcome is "Check" even when the profile passes.
+### 9.4 Requirement Sentences (rule labels)
 
-| Scholarship | Rule | Requirement sentence (rule label) |
-|---|---|---|
-| sch-001 | Year in [1] | This scholarship is open to Year 1 students only. |
-| sch-001 | GPA ≥ 3.00 | This scholarship requires a GPA of 3.00 or above. |
-| sch-001 | Residency = local | This scholarship is open to local students. |
-| sch-002 | Activities include community service | This scholarship requires community service. |
-| sch-002 | Year in [1 to 4] | This scholarship is open to Years 1 to 4. |
-| sch-003 | Faculty in [Business] | This scholarship is open to Business students. |
-| sch-003 | Activities include leadership | This scholarship requires leadership experience. |
-| sch-003 | GPA ≥ 2.80 | This scholarship requires a GPA of 2.80 or above. |
-| sch-004 | Financial need = yes | This scholarship requires a declaration of financial need. |
-| sch-004 | Residency = local | This scholarship is open to local students. |
-| sch-005 | Activities include leadership | This scholarship requires leadership experience. |
-| sch-005 | Year in [1, 2] | This scholarship is open to Years 1 and 2. |
-| sch-005 | Leadership held 1 year or more (M) | This scholarship requires a leadership role held for at least one year. The provider will ask for evidence of this. |
-| sch-006 | Languages include all of English, Cantonese, Putonghua (M) | This scholarship requires English, Cantonese and Putonghua. The provider will ask for evidence of this. |
-| sch-006 | GPA ≥ 3.00 | This scholarship requires a GPA of 3.00 or above. |
-| sch-007 | First-generation = yes | This scholarship is for first-generation university students. |
-| sch-007 | Financial need = yes | This scholarship requires a declaration of financial need. |
-| sch-007 | Residency = local | This scholarship is open to local students. |
-| sch-008 | Activities include community service | This scholarship requires community service. |
-| sch-008 | 50+ verified volunteer hours (M) | This scholarship requires at least 50 verified volunteer hours. The provider will ask for evidence of this. |
-| sch-009 | GPA ≥ 3.60 | This scholarship requires a GPA of 3.60 or above. |
-| sch-009 | Year in [1 to 4] | This scholarship is open to Years 1 to 4. |
-| sch-010 | Activities include sports | This scholarship requires sports involvement. |
-| sch-010 | Year in [1 to 4] | This scholarship is open to Years 1 to 4. |
-| sch-011 | Activities include arts | This scholarship requires arts involvement. |
-| sch-011 | Faculty in [Arts, Education] | This scholarship is open to Arts and Education students. |
-| sch-012 | Year in [3, 4] | This scholarship is open to Years 3 and 4. |
-| sch-012 | Faculty in [Science, Engineering] | This scholarship is open to Science and Engineering students. |
-| sch-012 | Activities include research | This scholarship requires research experience. |
+Every rule's label follows one of these patterns, filled in from the table above:
 
-Rules marked (M) for sch-005 and sch-008 are implemented as "activities include leadership" and "activities include community service" respectively, with the manual flag set.
+| Rule type | Requirement sentence |
+|---|---|
+| GPA | "This scholarship requires a GPA of {3.00} or above." |
+| Year of study | "This scholarship is open to Year 1 students only." / "...open to Years 1 and 2." / "...open to Years 3 and 4." / "...open to Years 1 to 4." |
+| Faculty | "This scholarship is open to {Business / Arts and Education / Science and Engineering} students." |
+| Residency | "This scholarship is open to local students." |
+| Financial need | "This scholarship requires a declaration of financial need." |
+| First-generation | "This scholarship is for first-generation university students." |
+| Activity | "This scholarship requires {community service / leadership experience / sports involvement / arts involvement / research experience}." |
+| sch-005 (M) | "This scholarship requires a leadership role held for at least one year. The provider will ask for evidence of this." |
+| sch-006 (M) | "This scholarship requires English, Cantonese and Putonghua. The provider will ask for evidence of this." |
+| sch-008 (M) | "This scholarship requires at least 50 verified volunteer hours. The provider will ask for evidence of this." |
 
 ### 9.5 Expected Results for the Seed Profile
 
@@ -436,20 +405,7 @@ Check this 4 / 4 / 4 split on `/matches` after any seed change.
 
 ## 10. Key Decisions and Trade-offs
 
-- **Scope cut to one core loop.** Login, payments, uploads and reminders add cost, security risk and legal duties without testing the core question (Section 2). They are kept in Phase 2, and the repository layer keeps the upgrade path open. A demo sign-in page shows where accounts will sit without collecting any credentials.
-- **Front end only.** A static app with seeded data deploys quickly, needs no secrets, has no server to secure and holds no real personal data. Trade-offs: data lives in one browser, metrics come from tester sessions only, and there is no multi-user view. All are acceptable for validation.
-- **Rule-based matching.** Eligibility is defined by published criteria, so checking those criteria is the honest model. It is explainable and testable, and shows students what to fix or confirm. AI prediction would be opaque, could encode bias and adds nothing where the rules are known.
-- **Readiness excludes win probability.** The app cannot know the applicant pool, panel judgement or funding limits, so any odds would be invented and could mislead. Document completeness is something students control and can act on.
-
----
-
-## 11. Open Questions
-
-1. **Phones.** The product is desktop-first and usable at 768px; behaviour below 768px is not specified, although testers may use phones. Decide whether Phase 2 needs a mobile target.
-2. **Success metrics.** The M1 to M4 targets are assumptions; no tester session results are recorded yet.
-3. **Repository copy.** `PRD.md` and `tasklist.md` on GitHub are still v1.3. Replace them with this version so the repository matches the submission.
-
-
----
-
-# =====
+- **One core loop in Phase 1.** Login, payments, uploads and reminders add cost, security risk and legal duties without testing the Section 2 question, so they are Phase 2. The demo sign-in page shows where accounts will sit without collecting credentials.
+- **Front end only.** No server, secrets or real personal data, so it is quick to deploy and safe to share. Trade-off: data lives in one browser and there is no multi-user view, which is acceptable for validation.
+- **Rule-based matching, not AI prediction.** Eligibility is defined by published criteria, so checking them is honest, explainable and testable; prediction would be opaque and could encode bias.
+- **Readiness excludes win probability.** The app cannot know the applicant pool or panel judgement, so any odds would be invented. Document completeness is something students control.
