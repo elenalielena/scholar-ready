@@ -32,6 +32,16 @@ body {
   outline-offset: 3px;
 }
 
+:where(a, button) {
+  min-width: 24px;
+  min-height: 24px;
+}
+
+:where(a) {
+  display: inline-flex;
+  align-items: center;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
