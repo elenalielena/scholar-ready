@@ -44,7 +44,7 @@
 
 - [x] **5. Scholarship, rule and deadline seed** [10 to 12]
   12 scholarships (PRD 9.3), 29 rules with labels set to the requirement sentences (PRD 9.4), 18 deadlines as day offsets.
-  **Done when:** ids run sch-001 to sch-012, providers end "(fictional)", amounts range HK$8,000 to HK$60,000; 29 rules, of which 3 are manual (sch-005, sch-006, sch-008); 18 deadlines, 12 of them application close, and the only negative offset is sch-008 reference due (-3).
+  **Done when:** ids run sch-001 to sch-012, providers end "(fictional)", amounts range from 8,000 to 60,000 Hong Kong dollars; 29 rules, of which 3 are manual (sch-005, sch-006, sch-008); 18 deadlines, 12 of them application close, and the only negative offset is sch-008 reference due (-3).
   **Depends on:** 3.
 
 - [x] **6. Seed builder** [13]
@@ -226,4 +226,4 @@
 
 ## Deferred (Phase 2)
 
-No tasks. See PRD Section 3.2 (P2-1 to P2-8).
+No tasks. See PRD Section 3.2 (P2-1 to P2-9).
