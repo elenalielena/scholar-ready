@@ -84,15 +84,15 @@ Phase 1 collects no real personal data, credentials or payments; the full list o
 
 | # | Feature | Needs |
 |---|---|---|
-| P2-1 | Real login, sign-up, password reset | Managed auth (e.g. Supabase Auth, Auth0, Clerk) with email verification and rate limiting; Postgres with row-level security |
-| P2-2 | Adviser and institution accounts, cohort view | Student, adviser and admin roles; data processing agreement; adviser access limited to readiness and deadlines |
-| P2-3 | Real payments and invoicing | Stripe or another HK-supported provider; webhook endpoint; server |
-| P2-4 | Document uploads | Object storage with signed URLs, size and type limits, malware scan, retention schedule |
-| P2-5 | Email deadline reminders | Transactional email, scheduled jobs, opt-in and unsubscribe |
-| P2-6 | Settings (account, notifications, data export and deletion) | Auth, database |
-| P2-7 | Automated tests and Lighthouse targets | Test tooling, CI pipeline |
-| P2-8 | In-app usage metrics | Privacy-respecting analytics, consent banner, updated privacy notice |
-| P2-9 | Mobile layout below 768px (phones) | Responsive redesign and mobile testing |
+| P2‑1 | Real login, sign-up, password reset | Managed auth (e.g. Supabase Auth, Auth0, Clerk) with email verification and rate limiting; Postgres with row-level security |
+| P2‑2 | Adviser and institution accounts, cohort view | Student, adviser and admin roles; data processing agreement; adviser access limited to readiness and deadlines |
+| P2‑3 | Real payments and invoicing | Stripe or another HK-supported provider; webhook endpoint; server |
+| P2‑4 | Document uploads | Object storage with signed URLs, size and type limits, malware scan, retention schedule |
+| P2‑5 | Email deadline reminders | Transactional email, scheduled jobs, opt-in and unsubscribe |
+| P2‑6 | Settings (account, notifications, data export and deletion) | Auth, database |
+| P2‑7 | Automated tests and Lighthouse targets | Test tooling, CI pipeline |
+| P2‑8 | In-app usage metrics | Privacy-respecting analytics, consent banner, updated privacy notice |
+| P2‑9 | Mobile layout below 768px (phones) | Responsive redesign and mobile testing |
 
 All data access goes through a repository layer (Section 6.3) so browser storage can later be replaced by an API without rewriting pages.
 
